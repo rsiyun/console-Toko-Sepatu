@@ -9,7 +9,7 @@ public class TransaksiDetail {
 
     public TransaksiDetail(int id_detail_transaksi, int id_transaksi, int id_produk_detail, float harga, Transaksi transaksi){
         this.id_detail_transaksi = id_detail_transaksi;
-        this.id_transaksi = id_transaksi;
+        this.id_transaksi = transaksi.getId_transaksi();
         this.id_produk_detail = id_produk_detail;
         this.harga = harga;
         this.transaksi = transaksi;
@@ -23,9 +23,6 @@ public class TransaksiDetail {
     }
     public int getId_transaksi() {
         return id_transaksi;
-    }
-    public void setId_transaksi(int id_transaksi) {
-        this.id_transaksi = id_transaksi;
     }
     public int getId_produk_detail() {
         return id_produk_detail;
@@ -44,6 +41,9 @@ public class TransaksiDetail {
     }
     public void setTransaksi(Transaksi transaksi) {
         this.transaksi = transaksi;
+        this.id_transaksi = transaksi.getId_transaksi(); // set id_transaksi
     }
+    
+
 
 }

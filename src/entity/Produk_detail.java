@@ -3,18 +3,20 @@ package entity;
 public class Produk_detail {
     private int id_produk_detail;
     private int id_produk; // foreign key Produk
+    private Produk produk; // reference
     private int ukuran;
     private String warna;
     private int stock;
 
-    public Produk_detail(int id_produk_detail, int id_produk, int ukuran, String warna, int stock) {
+    public Produk_detail(int id_produk_detail, int id_produk, int ukuran, String warna, int stock, Produk produk) {
         this.id_produk_detail = id_produk_detail;
-        this.id_produk = id_produk;
+        this.id_produk = produk.getId_Produk();
         this.ukuran = ukuran;
         this.warna = warna;
         this.stock = stock;
+        this.produk = produk;
     }
-
+    
     public int getId_Produk_detail() {
         return id_produk_detail;
     }
@@ -27,8 +29,13 @@ public class Produk_detail {
         return id_produk;
     }
 
-    public void setId_Produk(int id_produk) {
-        this.id_produk = id_produk;
+    public Produk getProduk() {
+        return produk;
+    }
+
+    public void setProduk(Produk produk) {
+        this.produk= produk;
+        this.id_produk = produk.getId_Produk();
     }
 
     public int getUkuran() {

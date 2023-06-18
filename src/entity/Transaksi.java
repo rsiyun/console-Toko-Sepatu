@@ -12,7 +12,7 @@ public class Transaksi {
 
     public Transaksi(int id_transaksi, int id_user, float total_harga, Date tgl_transaksi, int stock, User user) {
         this.id_transaksi = id_transaksi;
-        this.id_user = id_user;
+        this.id_user = user.getId_user();
         this.total_harga = total_harga;
         this.tgl_transaksi = tgl_transaksi;
         this.stock = stock;
@@ -27,9 +27,6 @@ public class Transaksi {
     }
     public int getId_user() {
         return id_user;
-    }
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
     }
     public float getTotal_harga() {
         return total_harga;
@@ -55,6 +52,7 @@ public class Transaksi {
 
     public void setUser(User user) {
         this.user = user;
+        this.id_user = user.getId_user(); // set id_user
     }
 
 }
