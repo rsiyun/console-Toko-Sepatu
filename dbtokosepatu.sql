@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1deb5ubuntu1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 16 Jun 2023 pada 14.23
--- Versi server: 8.0.32-0ubuntu0.22.04.2
--- Versi PHP: 8.1.2-1ubuntu2.11
+-- Generation Time: Jun 18, 2023 at 08:09 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `brand`
+-- Table structure for table `brand`
 --
 
 CREATE TABLE `brand` (
@@ -35,7 +35,7 @@ CREATE TABLE `brand` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detail_transaksi`
+-- Table structure for table `detail_transaksi`
 --
 
 CREATE TABLE `detail_transaksi` (
@@ -48,20 +48,20 @@ CREATE TABLE `detail_transaksi` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `produk`
+-- Table structure for table `produk`
 --
 
 CREATE TABLE `produk` (
   `id_produk` int NOT NULL,
   `id_brand` int NOT NULL,
-  `nama_product` float NOT NULL,
+  `nama_product` varchar(255) NOT NULL,
   `harga` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `produk_detail`
+-- Table structure for table `produk_detail`
 --
 
 CREATE TABLE `produk_detail` (
@@ -75,7 +75,7 @@ CREATE TABLE `produk_detail` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `transaksi`
+-- Table structure for table `transaksi`
 --
 
 CREATE TABLE `transaksi` (
@@ -89,7 +89,7 @@ CREATE TABLE `transaksi` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -101,7 +101,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_user`, `username`, `password`, `role`, `active`) VALUES
@@ -112,77 +112,77 @@ INSERT INTO `users` (`id_user`, `username`, `password`, `role`, `active`) VALUES
 --
 
 --
--- Indeks untuk tabel `brand`
+-- Indexes for table `brand`
 --
 ALTER TABLE `brand`
   ADD PRIMARY KEY (`id_brand`);
 
 --
--- Indeks untuk tabel `detail_transaksi`
+-- Indexes for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
   ADD PRIMARY KEY (`id_detail_transaksi`);
 
 --
--- Indeks untuk tabel `produk`
+-- Indexes for table `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`);
 
 --
--- Indeks untuk tabel `produk_detail`
+-- Indexes for table `produk_detail`
 --
 ALTER TABLE `produk_detail`
   ADD PRIMARY KEY (`id_produk_detail`);
 
 --
--- Indeks untuk tabel `transaksi`
+-- Indexes for table `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_transaksi`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `brand`
+-- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
   MODIFY `id_brand` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `detail_transaksi`
+-- AUTO_INCREMENT for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
   MODIFY `id_detail_transaksi` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `produk`
+-- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
   MODIFY `id_produk` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `produk_detail`
+-- AUTO_INCREMENT for table `produk_detail`
 --
 ALTER TABLE `produk_detail`
   MODIFY `id_produk_detail` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `transaksi`
+-- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
   MODIFY `id_transaksi` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
