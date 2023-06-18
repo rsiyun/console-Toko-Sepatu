@@ -1,7 +1,7 @@
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import classPackage.User;
+import entity.User;
 
 public class App {
     public static void main(String[] args) throws Exception {
