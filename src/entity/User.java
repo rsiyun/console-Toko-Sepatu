@@ -1,13 +1,13 @@
 package entity;
 
 public class User {
-    private int id_user;
+    private int idUser;
     private String username;
     private String password;
     private int role;
     private int active;
-    public User(int id_user, String username, String password, int role, int active) {
-        this.id_user = id_user;
+    public User(int idUser, String username, String password, int role, int active) {
+        this.idUser = idUser;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -37,10 +37,10 @@ public class User {
     public void setActive(int active) {
         this.active = active;
     }
-    public int getId_user() {
-        return id_user;
+    public int getIdUser() {
+        return idUser;
     }
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }

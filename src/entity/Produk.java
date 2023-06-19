@@ -1,30 +1,30 @@
 package entity;
 
 public class Produk {
-    private int id_produk;
-    private int id_brand; // foreign key Brand
+    private int idProduk;
+    private int idBrand; // foreign key Brand
     private Brand brand; // reference
-    private String nama_product;
+    private String namaProduct;
     private float harga;
 
-    public Produk(int id_produk, int id_brand, String nama_product, float harga, Brand brand) {
-        this.id_produk = id_produk;
-        this.id_brand = brand.getId_Brand();
-        this.nama_product = nama_product;
+    public Produk(int idProduk, int idBrand, String namaProduct, float harga, Brand brand) {
+        this.idProduk = idProduk;
+        this.idBrand = brand.getIdBrand();
+        this.namaProduct = namaProduct;
         this.harga = harga;
         this.brand = brand;
     }
 
-    public int getId_Produk() {
-        return id_produk;
+    public int getIdProduk() {
+        return idProduk;
     }
 
-    public void setId_Produk(int id_produk) {
-        this.id_produk = id_produk;
+    public void setIdProduk(int idProduk) {
+        this.idProduk = idProduk;
     }
 
-    public int getId_Brand() {
-        return id_brand;
+    public int getidBrand() {
+        return idBrand;
     }
 
     public Brand getBrand() {
@@ -33,15 +33,15 @@ public class Produk {
 
     public void setBrand(Brand brand) {
         this.brand= brand;
-        this.id_brand = brand.getId_Brand();
+        this.idBrand = brand.getIdBrand();
     }
 
-    public String getNama_Product() {
-        return nama_product;
+    public String getNamaProduct() {
+        return namaProduct;
     }
 
-    public void setNama_Product(String nama_product) {
-        this.nama_product = nama_product;
+    public void setNamaProduct(String namaProduct) {
+        this.namaProduct = namaProduct;
     }
 
     public float getHarga() {

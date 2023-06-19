@@ -1,34 +1,35 @@
 package entity;
 
 public class TransaksiDetail {
-    private int id_detail_transaksi;
-    private int id_transaksi;
-    private int id_produk_detail;
+    private int idDetailTransaksi;
+    private int idTransaksi;
+    private int idProdukDetail;
     private float harga;
     private Transaksi transaksi;
+    private ProdukDetail produkDetail;
 
-    public TransaksiDetail(int id_detail_transaksi, int id_transaksi, int id_produk_detail, float harga, Transaksi transaksi){
-        this.id_detail_transaksi = id_detail_transaksi;
-        this.id_transaksi = transaksi.getId_transaksi();
-        this.id_produk_detail = id_produk_detail;
+    public TransaksiDetail(int idDetailTransaksi, int idTransaksi, int idProdukDetail, float harga, Transaksi transaksi, ProdukDetail produkDetail){
+        this.idDetailTransaksi = idDetailTransaksi;
+        this.idTransaksi = transaksi.getIdTransaksi();
+        this.idProdukDetail = idProdukDetail;
         this.harga = harga;
         this.transaksi = transaksi;
     }
 
-    public int getId_detail_transaksi() {
-        return id_detail_transaksi;
+    public int getIdDetailTransaksi() {
+        return idDetailTransaksi;
     }
-    public void setId_detail_transaksi(int id_detail_transaksi) {
-        this.id_detail_transaksi = id_detail_transaksi;
+    public void setIdDetailTransaksi(int idDetailTransaksi) {
+        this.idDetailTransaksi = idDetailTransaksi;
     }
-    public int getId_transaksi() {
-        return id_transaksi;
+    public int getIdTransaksi() {
+        return idTransaksi;
     }
-    public int getId_produk_detail() {
-        return id_produk_detail;
+    public int getIdProdukDetail() {
+        return idProdukDetail;
     }
-    public void setId_produk_detail(int id_produk_detail) {
-        this.id_produk_detail = id_produk_detail;
+    public void setIdProdukDetail(int idProdukDetail) {
+        this.idProdukDetail = idProdukDetail;
     }
     public float getHarga() {
         return harga;
@@ -41,7 +42,14 @@ public class TransaksiDetail {
     }
     public void setTransaksi(Transaksi transaksi) {
         this.transaksi = transaksi;
-        this.id_transaksi = transaksi.getId_transaksi(); // set id_transaksi
+        this.idTransaksi = transaksi.getIdTransaksi(); // set idTransaksi
+    }
+    public ProdukDetail getProdukDetail() {
+        return this.produkDetail;
+    }
+    public void setProdukDetail(ProdukDetail produkDetail) {
+        this.produkDetail = produkDetail;
+        this.idProdukDetail = produkDetail.getIdProdukDetail(); // set idTransaksi
     }
     
 

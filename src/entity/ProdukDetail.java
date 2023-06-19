@@ -1,32 +1,32 @@
 package entity;
 
-public class Produk_detail {
-    private int id_produk_detail;
-    private int id_produk; // foreign key Produk
+public class ProdukDetail {
+    private int idProdukDetail;
+    private int idProduk; // foreign key Produk
     private Produk produk; // reference
     private int ukuran;
     private String warna;
     private int stock;
 
-    public Produk_detail(int id_produk_detail, int id_produk, int ukuran, String warna, int stock, Produk produk) {
-        this.id_produk_detail = id_produk_detail;
-        this.id_produk = produk.getId_Produk();
+    public ProdukDetail(int idProdukDetail, int idProduk, int ukuran, String warna, int stock, Produk produk) {
+        this.idProdukDetail = idProdukDetail;
+        this.idProduk = produk.getIdProduk();
         this.ukuran = ukuran;
         this.warna = warna;
         this.stock = stock;
         this.produk = produk;
     }
     
-    public int getId_Produk_detail() {
-        return id_produk_detail;
+    public int getIdProdukDetail() {
+        return idProdukDetail;
     }
 
-    public void setId_Produk_detail(int id_produk_detail) {
-        this.id_produk_detail = id_produk_detail;
+    public void setidProdukDetail(int idProdukDetail) {
+        this.idProdukDetail = idProdukDetail;
     }
 
-    public int getId_Produk() {
-        return id_produk;
+    public int getidProduk() {
+        return idProduk;
     }
 
     public Produk getProduk() {
@@ -35,7 +35,7 @@ public class Produk_detail {
 
     public void setProduk(Produk produk) {
         this.produk= produk;
-        this.id_produk = produk.getId_Produk();
+        this.idProduk = produk.getIdProduk();
     }
 
     public int getUkuran() {

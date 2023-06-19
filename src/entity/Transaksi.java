@@ -3,42 +3,42 @@ package entity;
 import java.sql.Date;
 
 public class Transaksi {
-    private int id_transaksi;
-    private int id_user;
-    private float total_harga;
-    private Date tgl_transaksi;
+    private int idTransaksi;
+    private int idUser;
+    private float totalHarga;
+    private Date tglTransaksi;
     private int stock;
     private User user;
 
-    public Transaksi(int id_transaksi, int id_user, float total_harga, Date tgl_transaksi, int stock, User user) {
-        this.id_transaksi = id_transaksi;
-        this.id_user = user.getId_user();
-        this.total_harga = total_harga;
-        this.tgl_transaksi = tgl_transaksi;
+    public Transaksi(int idTransaksi, int idUser, float totalHarga, Date tglTransaksi, int stock, User user) {
+        this.idTransaksi = idTransaksi;
+        this.idUser = user.getIdUser();
+        this.totalHarga = totalHarga;
+        this.tglTransaksi = tglTransaksi;
         this.stock = stock;
         this.user = user;
     }
 
-    public int getId_transaksi() {
-        return id_transaksi;
+    public int getIdTransaksi() {
+        return idTransaksi;
     }
-    public void setId_transaksi(int id_transaksi) {
-        this.id_transaksi = id_transaksi;
+    public void setIdTransaksi(int idTransaksi) {
+        this.idTransaksi = idTransaksi;
     }
-    public int getId_user() {
-        return id_user;
+    public int getIdUser() {
+        return idUser;
     }
-    public float getTotal_harga() {
-        return total_harga;
+    public float getTotalHarga() {
+        return totalHarga;
     }
-    public void setTotal_harga(float total_harga) {
-        this.total_harga = total_harga;
+    public void setTotalHarga(float totalHarga) {
+        this.totalHarga = totalHarga;
     }
-    public Date getTgl_transaksi() {
-        return tgl_transaksi;
+    public Date getTglTransaksi() {
+        return tglTransaksi;
     }
-    public void setTgl_transaksi(Date tgl_transaksi) {
-        this.tgl_transaksi = tgl_transaksi;
+    public void setTglTransaksi(Date tglTransaksi) {
+        this.tglTransaksi = tglTransaksi;
     }
     public int getStock() {
         return stock;
@@ -52,7 +52,7 @@ public class Transaksi {
 
     public void setUser(User user) {
         this.user = user;
-        this.id_user = user.getId_user(); // set id_user
+        this.idUser = user.getIdUser(); // set idUser
     }
 
 }

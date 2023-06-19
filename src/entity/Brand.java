@@ -1,20 +1,20 @@
 package entity;
 
 public class Brand {
-    private int id_brand;
+    private int idBrand;
     private String brand;
 
-    public Brand(int id_brand, String brand) {
-        this.id_brand = id_brand;
+    public Brand(int idBrand, String brand) {
+        this.idBrand = idBrand;
         this.brand = brand;
     }
 
-    public int getId_Brand() {
-        return id_brand;
+    public int getIdBrand() {
+        return idBrand;
     }
 
-    public void setId_Brand(int id_brand) {
-        this.id_brand = id_brand;
+    public void setIdBrand(int idBrand) {
+        this.idBrand = idBrand;
     }
 
     public String getBrand() {
