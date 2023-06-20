@@ -1,10 +1,7 @@
-import app.Admin;
-import app.Auth;
+import app.Admin.Admin;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        // Auth login = new Auth();
-        // login.processRegister();
         Admin admin = new Admin();
         admin.menu();
     }
