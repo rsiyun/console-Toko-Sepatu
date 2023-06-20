@@ -32,7 +32,7 @@ public class Auth {
         String sql = "INSERT INTO users (username, password, role, active) VALUES ('"+username+"','"+password+"', 0, 1);";
         connection.getConnection().createStatement().executeUpdate(sql);
     }
-    public String processLogin() throws Exception {
+    public User processLogin() throws Exception {
         getDataUser();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Username: ");
@@ -43,14 +43,14 @@ public class Auth {
         scanner.close();
         return checkLogin(username, password, getUserList());
     }
-   public String checkLogin(String username, String password, ArrayList<User> userList){
+   public User checkLogin(String username, String password, ArrayList<User> userList){
         for (int i = 0; i < userList.size(); i++) {
             if (username.equals(userList.get(i).getUsername()) && password.equals(userList.get(i).getPassword())) {
                 System.out.println("Login berhasil!");
-                return username;
+                return userList.get(i);
             }
         }
-        return "";
+        return null;
    }
 
    public void processRegister() throws Exception {
