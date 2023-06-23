@@ -1,12 +1,11 @@
 package app.Admin;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 import entity.Brand;
-import service.ExecuteSql;
+import service.AllSql;
 
-public class BrandFlow extends ExecuteSql{
+public class BrandController extends AllSql{
     public void brandAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
         System.out.println("1. menambah data");
@@ -69,16 +68,15 @@ public class BrandFlow extends ExecuteSql{
         }
         scanner.close();
     }
-    public void select() throws Exception{
-        String select = "SELECT*FROM brand";
-        ResultSet rs = this.sqlquerry(select);
-        ArrayList<Brand> list = new ArrayList<Brand>();
-        while(rs.next()){
-            Brand brand = new Brand(rs.getInt("id_brand"),rs.getString("brand"));
-            list.add(brand);
-        }
-        for (int i = 0; i < list.size(); i++) {
+    public void select(){
+        try {
+            ArrayList<Brand> list = this.selectBrand();
+            for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i).getIdBrand() +" "+list.get(i).getBrand());
         }
+        } catch (Exception e) {
+            System.out.print("Something wrong in this area");
+        }
+
     }
 }

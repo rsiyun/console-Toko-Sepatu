@@ -1,8 +1,10 @@
 package app.Admin;
-import java.util.Scanner;
 
-public class Admin {
-    public void menu() throws Exception {
+import java.util.Scanner;
+import service.AllSql;
+
+public class ProdukController extends AllSql{
+    public void ProductAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Selamat Datang Admin: ");
         System.out.println("1. List Brand");
@@ -13,13 +15,11 @@ public class Admin {
         String pilihan = scanner.nextLine();
         switch (pilihan) {
             case "1":
-                BrandController bc = new BrandController();
-                bc.brandAdmin();
+
                 break;
         
             case "2":
-                ProdukDetailController pdc = new ProdukDetailController();
-                pdc.showProductDetail();
+                    
                 break;
         
             case "3":

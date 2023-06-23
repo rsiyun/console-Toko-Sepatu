@@ -3,10 +3,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import connection.Conn;
 import entity.User;
+import service.AllSql;
 
-public class Auth {
+public class Auth extends AllSql{
     private ArrayList<User> userList = new ArrayList<User>();
 
     public ArrayList<User> getUserList() {
@@ -16,9 +16,8 @@ public class Auth {
         this.userList = userList;
     }
     public void getDataUser() throws Exception{
-        Conn connection = new Conn();
         String sql = "SELECT * FROM users";
-        ResultSet rs = connection.getConnection().createStatement().executeQuery(sql);
+        ResultSet rs = this.sqlquerry(sql);
         ArrayList<User> list = new ArrayList<User>();
         while(rs.next()){
             User user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getString("password"), rs.getInt("role"), rs.getInt("active"));
@@ -28,9 +27,8 @@ public class Auth {
         
     }
     public void insertUser(String username, String password) throws Exception{
-        Conn connection = new Conn();
         String sql = "INSERT INTO users (username, password, role, active) VALUES ('"+username+"','"+password+"', 0, 1);";
-        connection.getConnection().createStatement().executeUpdate(sql);
+        this.sqlexupdate(sql);
     }
     public User processLogin() throws Exception {
         getDataUser();

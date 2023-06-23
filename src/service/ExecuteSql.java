@@ -2,7 +2,6 @@ package service;
 
 import java.sql.ResultSet;
 
-import connection.Conn;
 
 public class ExecuteSql {
     public void sqlexupdate(String sql){
