@@ -5,15 +5,17 @@ public class TransaksiDetail {
     private int idTransaksi;
     private int idProdukDetail;
     private float harga;
+    private int quantity;
     private Transaksi transaksi;
     private ProdukDetail produkDetail;
 
-    public TransaksiDetail(int idDetailTransaksi, int idTransaksi, int idProdukDetail, float harga, Transaksi transaksi, ProdukDetail produkDetail){
+    public TransaksiDetail(int idDetailTransaksi, int idTransaksi, int idProdukDetail, float harga, int quantity, Transaksi transaksi, ProdukDetail produkDetail){
         this.idDetailTransaksi = idDetailTransaksi;
         this.idTransaksi = transaksi.getIdTransaksi();
         this.idProdukDetail = idProdukDetail;
         this.harga = harga;
         this.transaksi = transaksi;
+        this.quantity = quantity;
     }
 
     public int getIdDetailTransaksi() {
@@ -36,6 +38,14 @@ public class TransaksiDetail {
     }
     public void setHarga(float harga) {
         this.harga = harga;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
     public Transaksi getTransaksi() {
         return transaksi;

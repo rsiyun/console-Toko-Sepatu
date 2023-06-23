@@ -26,6 +26,10 @@ public class Produk {
     public int getidBrand() {
         return idBrand;
     }
+    public void setIdBrand(int idBrand) {
+        this.idBrand = idBrand;
+    }
+
 
     public Brand getBrand() {
         return brand;

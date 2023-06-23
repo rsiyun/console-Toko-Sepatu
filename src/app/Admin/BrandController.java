@@ -44,13 +44,15 @@ public class BrandController extends AllSql{
         this.sqlexupdate(sql);
         scanner.close();
     }
-    public void update(){
+    public void update() throws Exception{
+        ArrayList<Brand> list = this.selectBrand();
         Scanner scanner = new Scanner(System.in);
         System.out.print("data mana yang mau di update: ");
-        String idUpdate = scanner.nextLine();
+        String idbrand = scanner.nextLine();
+        // BELUM ADA PENGECHECKAN MENGENAI DATA YANG DIPILIH OLEH USER
         System.out.print("masukkan data brand yang baru: ");
         String newbrand = scanner.nextLine();
-        String sql = "UPDATE brand SET brand = '"+newbrand+"' WHERE id_brand= "+idUpdate+"";
+        String sql = "UPDATE brand SET brand = '"+newbrand+"' WHERE id_brand= "+idbrand+"";
         this.sqlexupdate(sql);
         scanner.close();
     }
@@ -63,8 +65,6 @@ public class BrandController extends AllSql{
         if (pil.equals("y") || pil.equals("Y")) {
             String sql = "DELETE FROM brand WHERE id_brand= "+idDelete+"";
             this.sqlexupdate(sql);
-            String sqlpro = "DELETE FROM product WHERE id_brand= "+idDelete+"";
-            this.sqlexupdate(sqlpro);
         }
         scanner.close();
     }
