@@ -8,19 +8,19 @@ import service.AllSql;
 public class BrandController extends AllSql{
     public void brandAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1. menambah data");
-        System.out.println("2. menampilkan data");
-        System.out.println("3. update data");
-        System.out.println("4. delete data");
+        System.out.println("1. Menampilkan data");
+        System.out.println("2. Menambahkan data");
+        System.out.println("3. Mengubah data");
+        System.out.println("4. Menghapus data");
         System.out.print("pilih pilihan anda: ");
         String pilihan = scanner.nextLine();
         switch (pilihan) {
             case "1":
-                create();
-                break;
+                select();
+            break;
             
             case "2":
-                select();
+                create();
                 break;
             case "3":
                 select();

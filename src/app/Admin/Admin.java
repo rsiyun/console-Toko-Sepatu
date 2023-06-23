@@ -1,6 +1,8 @@
 package app.Admin;
 import java.util.Scanner;
 
+import entity.Produk;
+
 public class Admin {
     public void menu() throws Exception {
         Scanner scanner = new Scanner(System.in);
@@ -18,8 +20,8 @@ public class Admin {
                 break;
         
             case "2":
-                ProdukDetailController pdc = new ProdukDetailController();
-                pdc.showProductDetail();
+                ProdukController pdc = new ProdukController();
+                pdc.ProductAdmin();
                 break;
         
             case "3":

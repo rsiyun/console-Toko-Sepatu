@@ -33,4 +33,15 @@ public class AllSql extends ExecuteSql{
         return list;
     }
     // Produk
+    public ArrayList<Produk> selectProduk() throws Exception{
+        String sql = "SELECT id_produk, produk.id_brand, nama_product, harga, brand.brand FROM produk INNER JOIN brand ON produk.id_brand = brand.id_brand;";
+        ResultSet rs = this.sqlquerry(sql);
+        ArrayList<Produk> list = new ArrayList<Produk>();
+        while (rs.next()) {
+            Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
+            Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), rs.getFloat("harga"), brand);
+            list.add(produk);
+        }
+        return list;
+    }
 }
