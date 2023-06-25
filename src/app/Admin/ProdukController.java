@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import entity.Brand;
 import entity.Produk;
+import entity.ProdukDetail;
 import service.AllSql;
 import service.CommandLineTable;
 
@@ -15,6 +16,7 @@ public class ProdukController extends AllSql{
         System.out.println("2. Menambah data");
         System.out.println("3. Mengubah data");
         System.out.println("4. Menghapus data");
+        System.out.println("5. Detail Produk");
         System.out.print("Pilih Pilihan anda: ");
         String pilihan = scanner.nextLine();
         switch (pilihan) {
@@ -34,6 +36,11 @@ public class ProdukController extends AllSql{
             case "4":
                 showProduk();
                 deleteProduk();
+                break;
+
+            case "5":
+                showProduk();
+                produkDetailAdmin();
                 break;
         
             default:
@@ -68,7 +75,7 @@ public class ProdukController extends AllSql{
         }
 
         // AMBIL OLD DATANYA
-        Produk oldData = getOneProdukbyid(list, idproduk);
+        Produk oldData = getProdukbyid(list, idproduk);
         System.out.print("Nama Produk: ");
         String namaproduk = scanner.nextLine();
         System.out.print("masukkan harga: ");
@@ -120,20 +127,110 @@ public class ProdukController extends AllSql{
         this.sqlexupdate(sql);
         scanner.close(); 
     }
-
     private void showProduk(){
         try {
             ArrayList<Produk> list = this.selectProduk();
             CommandLineTable st = new CommandLineTable();
             st.setShowVerticalLines(true);
-            st.setHeaders("id produk", "Brand", "Nama Produk", "Harga");
+            st.setHeaders("id produk", "Nama Produk", "Produk", "Harga");
             for (int i = 0; i < list.size(); i++) {
-                st.addRow(Integer.toString(list.get(i).getIdProduk()), list.get(i).getBrand().getBrand(), list.get(i).getNamaProduct(), String.valueOf(list.get(i).getHarga()));
+                st.addRow(Integer.toString(list.get(i).getIdProduk()), list.get(i).getNamaProduct(), list.get(i).getBrand().getBrand(), String.valueOf(list.get(i).getHarga()));
             }
             st.print();
 
         } catch (Exception e) {
             System.out.print(e);
+        }
+    }
+    public void produkDetailAdmin() throws Exception{
+        ArrayList<Produk> list = this.selectProduk();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Pilih produk yang ingin dilihat detailnya: ");
+        String idproduk = scanner.nextLine();
+        if (!checkProduk(list, idproduk)) { 
+            System.out.print("Tolong Input dengan benar");
+            scanner.close();
+            return;
+        }
+        System.out.println("1. Menampilkan data");
+        System.out.println("2. Menambah data");
+        System.out.println("3. Mengubah data");
+        System.out.println("4. Menghapus data");
+        System.out.print("pilih pilihan anda: ");
+        String pilihan = scanner.nextLine();
+        switch (pilihan) {
+            case "1":
+                showProductDetail(Integer.parseInt(idproduk));
+                break;
+            
+            case "2":
+                createProdukDetail(Integer.parseInt(idproduk));
+                break;
+            case "3":
+                showProductDetail(Integer.parseInt(idproduk));
+                updateProdukDetail(Integer.parseInt(idproduk));
+                break;
+
+            case "4":
+                showProductDetail(Integer.parseInt(idproduk));
+                deleteProdukDetail(Integer.parseInt(idproduk));
+                break;
+            default:
+                break;
+        }
+        scanner.close();
+    }
+    public void createProdukDetail(int idproduk){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Masukkan Ukuran Produk: ");
+        String ukuranproduk = scanner.nextLine();
+        System.out.print("Masukkan Warna Produk: ");
+        String warnaproduk = scanner.nextLine();
+        System.out.print("Masukkan Stok Produk: ");
+        String stokproduk = scanner.nextLine();
+        String sql = "INSERT INTO produk_detail (id_produk, ukuran, warna, stock) VALUES ("+idproduk+", "+ukuranproduk+", '"+warnaproduk+"', "+stokproduk+")";
+        this.sqlexupdate(sql);
+        scanner.close();
+    }
+    public void updateProdukDetail(int newidproduk) throws Exception{
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<ProdukDetail> list = this.selectProdukDetailbyIdproduk(newidproduk);
+        System.out.print("data mana yang mau di update: ");
+        String idUpdate = scanner.nextLine();
+        if (!checkProdukDetail(list, idUpdate)) {
+            System.out.print("Tolong Input dengan benar");
+            scanner.close();
+            return;
+        }
+        ProdukDetail oldData =  getProdukDetailById(list, idUpdate);
+        System.out.print("masukkan data ukuran produk yang baru: ");
+        String newukuranproduk = scanner.nextLine();
+        System.out.print("masukkan data warna produk yang baru: ");
+        String newwarnaproduk = scanner.nextLine();
+        System.out.print("masukkan data stok produk yang baru: ");
+        String newstokproduk = scanner.nextLine();
+        String sql = "UPDATE produk_detail SET id_produk = "+newidproduk+", ukuran = "+(newukuranproduk.isEmpty() ? oldData.getUkuran() : newukuranproduk)+", warna = '"+(newwarnaproduk.isEmpty() ? oldData.getWarna() : newwarnaproduk)+"', stock = "+(newstokproduk.isEmpty() ? oldData.getStock() : newstokproduk)+" WHERE id_produk_detail= "+idUpdate+"";
+        this.sqlexupdate(sql);
+        scanner.close();
+    }
+    public void deleteProdukDetail(int idproduk) throws Exception{
+        ArrayList<ProdukDetail> list = this.selectProdukDetailbyIdproduk(idproduk);
+        Scanner scanner = new Scanner(System.in);
+        System.out.print(" data mana yang mau di delete ? ");
+        String idDelete = scanner.nextLine();
+        if (!checkProdukDetail(list, idDelete)) {
+            System.out.print("Tolong Input dengan benar");
+            scanner.close();
+            return;
+        }
+        String sql = "DELETE FROM produk_detail WHERE id_produk_detail = "+idDelete+"";
+        this.sqlexupdate(sql);
+        scanner.close();
+    }
+    public void showProductDetail(int id) throws Exception{
+        ArrayList<ProdukDetail> list = this.selectProdukDetailbyIdproduk(id);
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).getIdProdukDetail() + " "+ list.get(i).getProduk().getBrand().getBrand() +" "+ list.get(i).getProduk().getNamaProduct() +" "+ list.get(i).getUkuran() + " " +list.get(i).getWarna() + " " + list.get(i).getStock());
         }
     }
     private boolean checkBrand(ArrayList<Brand> list, String idbrand){
@@ -154,10 +251,28 @@ public class ProdukController extends AllSql{
         }
         return t;
     }
-    private Produk getOneProdukbyid(ArrayList<Produk> list, String idproduk){
+    private boolean checkProdukDetail(ArrayList<ProdukDetail> list, String idProdukDetail){
+        boolean t = false;
+        for (int i = 0; i < list.size(); i++) {            
+            if (idProdukDetail.equals(Integer.toString(list.get(i).getIdProdukDetail()))) {
+                t = true;
+            }
+        }
+        return t;
+    }
+    private Produk getProdukbyid(ArrayList<Produk> list, String idproduk){
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getIdProduk() == Integer.parseInt(idproduk)) {
                 Produk oldData = new Produk(list.get(i).getIdProduk(), list.get(i).getidBrand(), list.get(i).getNamaProduct(), list.get(i).getHarga(), list.get(i).getBrand());
+                return oldData;
+            }
+        }
+        return null;
+    }
+    private ProdukDetail getProdukDetailById(ArrayList<ProdukDetail> list, String idprodukdetail){
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getIdProdukDetail() == Integer.parseInt(idprodukdetail)) {
+                ProdukDetail oldData = new ProdukDetail(list.get(i).getIdProdukDetail(), list.get(i).getidProduk(), list.get(i).getUkuran(), list.get(i).getWarna(), list.get(i).getStock(), list.get(i).getProduk());
                 return oldData;
             }
         }
