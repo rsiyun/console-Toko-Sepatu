@@ -29,7 +29,8 @@ public class Admin {
                 break;
         
             case "4":
-                System.out.println("User");
+                UserController uc = new UserController();
+                uc.UserAdmin();
                 break;
         
             default:

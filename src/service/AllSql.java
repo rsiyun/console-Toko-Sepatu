@@ -10,6 +10,17 @@ import entity.Transaksi;
 import entity.User;
 
 public class AllSql extends ExecuteSql{
+    // User
+    public ArrayList<User> selectUser() throws Exception{
+        String selectUser = "SELECT id_user, username, password, role, active FROM users";
+        ResultSet rs = this.sqlquerry(selectUser);
+        ArrayList<User> list = new ArrayList<User>();
+        while (rs.next()) {
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getString("password"), rs.getInt("role"), rs.getInt("active"));
+            list.add(user);
+        }
+        return list;
+    }
     // Brand
     public ArrayList<Brand> selectBrand() throws Exception{
         String select = "SELECT id_brand, brand FROM brand";

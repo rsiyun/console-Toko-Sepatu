@@ -44,6 +44,7 @@ public class ProdukController extends AllSql{
                 break;
         
             default:
+                System.out.println("Pilihan tidak ada");
                 break;
         }
         scanner.close();
