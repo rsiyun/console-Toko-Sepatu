@@ -4,13 +4,16 @@ import java.sql.ResultSet;
 
 
 public class ExecuteSql {
-    public void sqlexupdate(String sql){
+    public int sqlexupdate(String sql){
+        int rowsAffected = 0;
         try {
             Conn connection = new Conn();
-            connection.getConnection().createStatement().executeUpdate(sql);
+            rowsAffected = connection.getConnection().createStatement().executeUpdate(sql);
+            return rowsAffected;
         } catch (Exception e) {
             System.out.println(e);
         }
+        return rowsAffected;
     }
     public ResultSet sqlquerry(String sql){
         try {

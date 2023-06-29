@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import entity.User;
 import service.AllSql;
 import service.CommandLineTable;
+import service.Enum;
 
 public class UserController extends AllSql{
     public void UserAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
         System.out.println("1. Menampilkan User");
         System.out.println("2. Ban/UnBan User");
-        System.out.println("Pilih Pilihan anda: ");
+        System.out.print("Pilih Pilihan anda: ");
         int pilihan = scanner.nextInt();
         switch (pilihan) {
             case 1:
@@ -30,7 +31,7 @@ public class UserController extends AllSql{
     public void UpdateUser() throws Exception{
         ArrayList<User> listUser = this.selectUser();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Masukkan id user yang ingin di ban/unban: ");
+        System.out.print("Masukkan id user yang ingin di ban/unban: ");
         int idUser = scanner.nextInt();
         if(!checkUser(listUser, idUser)){
             System.out.println("Tolong Input id dengan benar");
@@ -38,28 +39,11 @@ public class UserController extends AllSql{
             return;
         }
         int status = checkStatus(listUser, idUser);
-        if(status == 0){
-            System.out.println("User tidak aktif, ingin diaktifkan? (y/n)");
-            String pilihan = scanner.next();
-            if(pilihan.equals("y") || pilihan.equals("Y")){
-                status = 1;
-            } else {
-                scanner.close();
-                return;
-            }
-        } else if (status == 1){
-            System.out.println("User aktif, ingin di nonaktifkan? (y/n)");
-            String pilihan = scanner.next();
-            if(pilihan.equals("y") || pilihan.equals("Y")){
-                status = 0;
-            } else {
-                scanner.close();
-                return;
-            }
+        status = setStatus(status);
+        String sql = "UPDATE users SET active = "+status+" WHERE id_user = "+idUser+" AND active != "+status+";";
+        if (sqlexupdate(sql) != 0) {
+            System.out.println("Berhasil mengubah status user");
         }
-        String sql = "UPDATE users SET active = "+status+" WHERE id_user = "+idUser+";";
-        this.sqlexupdate(sql);
-        System.out.println("Berhasil mengubah status user");
         scanner.close();
     }
 
@@ -70,18 +54,39 @@ public class UserController extends AllSql{
             cmd.setShowVerticalLines(true);
             cmd.setHeaders("ID User", "Username", "Role", "Status");
             for(User user : listUser){
-                String status = "";
-                if(user.getActive() == 0){
-                    status = "Unactive";
-                } else if(user.getActive() == 1){
-                    status = "Active";
-                }
-                cmd.addRow(String.valueOf(user.getIdUser()), user.getUsername(), String.valueOf(user.getRole()), status);
+                cmd.addRow(String.valueOf(user.getIdUser()), user.getUsername(), String.valueOf(user.getRole()), getstatus(user));
             }
             cmd.print();
         }catch(Exception e){
             System.out.println(e);
         }
+    }
+
+    // Siyun (add new method)
+
+    private String getstatus(User user){
+        if(user.getActive() == Enum.StatusUsers.Unactive.value){
+            return "Unactive";
+        }
+        return "Active";
+    }
+    private int choose(int status, int newStatus){
+        Scanner scanner = new Scanner(System.in);
+        String pilihan = scanner.next();
+        if(pilihan.equals("y") || pilihan.equals("Y")){
+            scanner.close();
+            return newStatus;
+        }
+        scanner.close();
+        return status;
+    }
+    private int setStatus(int status){
+        if(status == Enum.StatusUsers.Unactive.value){
+            System.out.print("User tidak aktif, ingin diaktifkan? (y/n)");
+            return choose(status, 1);
+        }
+        System.out.print("User aktif, ingin di nonaktifkan? (y/n)");
+        return choose(status, 0);
     }
     
     private boolean checkUser(ArrayList<User> list, int id) throws Exception{
@@ -93,7 +98,7 @@ public class UserController extends AllSql{
         return false;
     } 
     private int checkStatus(ArrayList<User> list, int id) throws Exception{
-        int status = 0; // 0 = unactive, 1 = active. with default value unactive
+        int status = 0;
         for(User user : list){
             if(user.getIdUser() == id){
                 status = user.getActive();
