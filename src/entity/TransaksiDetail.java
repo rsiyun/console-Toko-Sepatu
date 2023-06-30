@@ -2,17 +2,17 @@ package entity;
 
 public class TransaksiDetail {
     private int idDetailTransaksi;
-    private int idTransaksi;
-    private int idProdukDetail;
+    private int idTransaksi; // foreign key Transaksi
+    private int idProdukDetail; // foreign key ProdukDetail
     private float harga;
     private int quantity;
-    private Transaksi transaksi;
-    private ProdukDetail produkDetail;
+    private Transaksi transaksi; // reference
+    private ProdukDetail produkDetail; // reference
 
     public TransaksiDetail(int idDetailTransaksi, int idTransaksi, int idProdukDetail, float harga, int quantity, Transaksi transaksi, ProdukDetail produkDetail){
         this.idDetailTransaksi = idDetailTransaksi;
         this.idTransaksi = transaksi.getIdTransaksi();
-        this.idProdukDetail = idProdukDetail;
+        this.idProdukDetail = produkDetail.getIdProdukDetail();
         this.harga = harga;
         this.transaksi = transaksi;
         this.quantity = quantity;

@@ -7,6 +7,7 @@ import entity.Brand;
 import entity.Produk;
 import entity.ProdukDetail;
 import entity.Transaksi;
+import entity.TransaksiDetail;
 import entity.User;
 
 public class AllSql extends ExecuteSql{
@@ -66,6 +67,21 @@ public class AllSql extends ExecuteSql{
             Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
             Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), rs.getFloat("harga"), brand);
             list.add(produk);
+        }
+        return list;
+    }
+    public ArrayList<TransaksiDetail> selectTransaksiDetail() throws Exception {
+        String sql = "SELECT id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_produk_detail, harga, quantity FROM detail_transaksi INNER JOIN transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi INNER JOIN produk_detail ON detail_transaksi.id_produk_detail = produk_detail.id_produk_detail;";
+        ResultSet rs = this.sqlquerry(sql);
+        ArrayList<TransaksiDetail> list = new ArrayList<TransaksiDetail>();
+        while (rs.next()){
+            // User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));
+            // Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
+            // Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), rs.getFloat("harga"), brand);
+            ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), null);
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), null);
+            TransaksiDetail transaksiDetail = new TransaksiDetail(rs.getInt("id_transaksi_detail"), rs.getInt("id_transaksi"), rs.getInt("id_produk_detail"), rs.getFloat("harga"), rs.getInt("quantity"), transaksi, produkDetail);
+            list.add(transaksiDetail);
         }
         return list;
     }

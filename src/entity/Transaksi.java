@@ -4,10 +4,10 @@ import java.sql.Date;
 
 public class Transaksi {
     private int idTransaksi;
-    private int idUser;
+    private int idUser; // foreign key User
     private float totalHarga;
     private Date tglTransaksi;
-    private User user;
+    private User user; // reference
 
     public Transaksi(int idTransaksi, int idUser, float totalHarga, Date tglTransaksi, User user) {
         this.idTransaksi = idTransaksi;
