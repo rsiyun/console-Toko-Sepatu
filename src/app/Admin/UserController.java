@@ -31,7 +31,7 @@ public class UserController extends AllSql{
     public void UpdateUser() throws Exception{
         ArrayList<User> listUser = this.selectUser();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Masukkan id user yang ingin di ban/unban: ");
+        System.out.print("Masukkan id user yang ingin diubah : ");
         int idUser = scanner.nextInt();
         if(!checkUser(listUser, idUser)){
             System.out.println("Tolong Input id dengan benar");
@@ -107,7 +107,6 @@ public class UserController extends AllSql{
         String pilihan = scanner.next();
         if(pilihan.equals("y") || pilihan.equals("Y")){
             scanner.close();
-            System.out.print("User berhasil diubah");
             return newEnum;
         }
         scanner.close();
@@ -122,35 +121,42 @@ public class UserController extends AllSql{
         return Enum.RoleUsers.superAdmin.label;
     }
     private int setRole(int role){
-        int pilihan = 0;
+        Scanner scanner = new Scanner(System.in);
         if(role == Enum.RoleUsers.Users.value){
-            System.out.print("User adalah USER, ingin dijadikan ADMIN? (y/n)");
-            System.out.print("1. SUPER ADMIN");
-            System.out.print("2. ADMIN");
-            System.out.print("Pilih Pilihan anda: ");
+            System.out.println("User adalah USER, ingin dijadikan ADMIN? (y/n)");
+            System.out.println("1. SUPER ADMIN");
+            System.out.println("2. ADMIN");
+            System.out.println("Pilih Pilihan anda: ");
+            int pilihan = scanner.nextInt();
+            scanner.close();
             if (pilihan == 1)
                 return Enum.RoleUsers.superAdmin.value;
             else if (pilihan == 2)
-                return Enum.RoleUsers.Admin.value;;        
+                return Enum.RoleUsers.Admin.value;        
         }else if(role == Enum.RoleUsers.Admin.value){
-            System.out.print("User adalah ADMIN, ingin dirubah menjadi?");
-            System.out.print("1. SUPER ADMIN");
-            System.out.print("2. USER");
-            System.out.print("Pilih Pilihan anda: ");
+            System.out.println("User adalah ADMIN, ingin dirubah menjadi?");
+            System.out.println("1. SUPER ADMIN");
+            System.out.println("2. USER");
+            System.out.println("Pilih Pilihan anda: ");
+            int pilihan = scanner.nextInt();
+            scanner.close();
             if (pilihan == 1)
                 return Enum.RoleUsers.superAdmin.value;
             else if (pilihan == 2)
                 return Enum.RoleUsers.Users.value;
         }else if (role == Enum.RoleUsers.superAdmin.value){
-            System.out.print("User adalah SUPER ADMIN, ingin dijadikan ADMIN? (y/n)");
-            System.out.print("1. ADMIN");
-            System.out.print("2. USER");
-            System.out.print("Pilih Pilihan anda: ");
+            System.out.println("User adalah SUPER ADMIN, ingin dijadikan ADMIN? (y/n)");
+            System.out.println("1. ADMIN");
+            System.out.println("2. USER");
+            System.out.println("Pilih Pilihan anda: ");
+            int pilihan = scanner.nextInt();
+            scanner.close();
             if (pilihan == 1)
                 return Enum.RoleUsers.Admin.value;
             else if (pilihan == 2)
                 return Enum.RoleUsers.Users.value;
         }
+        scanner.close();
         return role;
     }
 

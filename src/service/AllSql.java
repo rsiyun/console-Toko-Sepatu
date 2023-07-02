@@ -70,8 +70,23 @@ public class AllSql extends ExecuteSql{
         }
         return list;
     }
+    public ArrayList<TransaksiDetail> selectTransaksiDetailbyIdtransaksi(int id) throws Exception {
+        String sql = "SELECT id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_produk_detail, detail_transaksi.harga, quantity, transaksi.id_user, transaksi.total_harga, transaksi.tgl_transaksi, transaksi.status, produk_detail.id_produk, produk_detail.ukuran, produk_detail.warna, produk_detail.stock, produk.id_brand, produk.nama_product, brand.brand, users.username, users.active FROM detail_transaksi INNER JOIN transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi INNER JOIN produk_detail ON detail_transaksi.id_produk_detail = produk_detail.id_produk_detail INNER JOIN produk ON produk_detail.id_produk = produk.id_produk INNER JOIN brand ON produk.id_brand = brand.id_brand INNER JOIN users ON transaksi.id_user = users.id_user WHERE detail_transaksi.id_transaksi = "+id+";";
+        ResultSet rs = this.sqlquerry(sql);
+        ArrayList<TransaksiDetail> list = new ArrayList<TransaksiDetail>();
+        while (rs.next()){
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));//user
+            Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
+            Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), 0, brand); //produk
+            ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), produk);//produk detail
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);//transaksi
+            TransaksiDetail transaksiDetail = new TransaksiDetail(rs.getInt("id_detail_transaksi"), rs.getInt("id_transaksi"), rs.getInt("id_produk_detail"), rs.getFloat("harga"), rs.getInt("quantity"), transaksi, produkDetail);
+            list.add(transaksiDetail);
+        }
+        return list;
+    }
     public ArrayList<TransaksiDetail> selectTransaksiDetail() throws Exception {
-        String sql = "SELECT id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_produk_detail, harga, quantity FROM detail_transaksi INNER JOIN transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi INNER JOIN produk_detail ON detail_transaksi.id_produk_detail = produk_detail.id_produk_detail;";
+        String sql = "SELECT id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_produk_detail, harga, quantity, transaksi.id_user, transaksi.total_harga, transaksi.tgl_transaksi, transaksi.status, produk_detail.id_produk, produk_detail.ukuran, produk_detail.warna, produk_detail.stock FROM detail_transaksi INNER JOIN transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi INNER JOIN produk_detail ON detail_transaksi.id_produk_detail = produk_detail.id_produk_detail;";
         ResultSet rs = this.sqlquerry(sql);
         ArrayList<TransaksiDetail> list = new ArrayList<TransaksiDetail>();
         while (rs.next()){
@@ -79,19 +94,19 @@ public class AllSql extends ExecuteSql{
             // Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
             // Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), rs.getFloat("harga"), brand);
             ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), null);
-            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), null);
-            TransaksiDetail transaksiDetail = new TransaksiDetail(rs.getInt("id_transaksi_detail"), rs.getInt("id_transaksi"), rs.getInt("id_produk_detail"), rs.getFloat("harga"), rs.getInt("quantity"), transaksi, produkDetail);
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), null);
+            TransaksiDetail transaksiDetail = new TransaksiDetail(rs.getInt("id_detail_transaksi"), rs.getInt("id_transaksi"), rs.getInt("id_produk_detail"), rs.getFloat("harga"), rs.getInt("quantity"), transaksi, produkDetail);
             list.add(transaksiDetail);
         }
         return list;
     }
     public ArrayList<Transaksi> selectTransaksi() throws Exception{
-        String sql = "SELECT id_transaksi, transaksi.id_user, total_harga, tgl_transaksi, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user;";
+        String sql = "SELECT id_transaksi, transaksi.id_user, total_harga, tgl_transaksi, status, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user;";
         ResultSet rs = this.sqlquerry(sql);
-        ArrayList<Transaksi> list = new ArrayList<Transaksi>(null);
+        ArrayList<Transaksi> list = new ArrayList<Transaksi>();
         while (rs.next()) {
             User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));
-            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), user);
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
             list.add(transaksi);
         }
         return list;

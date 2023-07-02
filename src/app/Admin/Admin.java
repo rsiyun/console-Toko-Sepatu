@@ -25,7 +25,8 @@ public class Admin {
                 break;
         
             case "3":
-                System.out.println("transaksi");
+                TransaksiController tc = new TransaksiController();
+                tc.TransaksiAdmin();
                 break;
         
             case "4":

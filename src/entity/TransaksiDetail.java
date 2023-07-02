@@ -14,8 +14,9 @@ public class TransaksiDetail {
         this.idTransaksi = transaksi.getIdTransaksi();
         this.idProdukDetail = produkDetail.getIdProdukDetail();
         this.harga = harga;
-        this.transaksi = transaksi;
         this.quantity = quantity;
+        this.transaksi = transaksi;
+        this.produkDetail = produkDetail;
     }
 
     public int getIdDetailTransaksi() {

@@ -161,19 +161,19 @@ public class ProdukController extends AllSql{
         String pilihan = scanner.nextLine();
         switch (pilihan) {
             case "1":
-                showProductDetail(Integer.parseInt(idproduk));
+                showProdukDetail(Integer.parseInt(idproduk));
                 break;
             
             case "2":
                 createProdukDetail(Integer.parseInt(idproduk));
                 break;
             case "3":
-                showProductDetail(Integer.parseInt(idproduk));
+                showProdukDetail(Integer.parseInt(idproduk));
                 updateProdukDetail(Integer.parseInt(idproduk));
                 break;
 
             case "4":
-                showProductDetail(Integer.parseInt(idproduk));
+                showProdukDetail(Integer.parseInt(idproduk));
                 deleteProdukDetail(Integer.parseInt(idproduk));
                 break;
             default:
@@ -228,7 +228,7 @@ public class ProdukController extends AllSql{
         this.sqlexupdate(sql);
         scanner.close();
     }
-    public void showProductDetail(int id) throws Exception{
+    public void showProdukDetail(int id) throws Exception{
         ArrayList<ProdukDetail> list = this.selectProdukDetailbyIdproduk(id);
         for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i).getIdProdukDetail() + " "+ list.get(i).getProduk().getBrand().getBrand() +" "+ list.get(i).getProduk().getNamaProduct() +" "+ list.get(i).getUkuran() + " " +list.get(i).getWarna() + " " + list.get(i).getStock());

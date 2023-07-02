@@ -7,13 +7,15 @@ public class Transaksi {
     private int idUser; // foreign key User
     private float totalHarga;
     private Date tglTransaksi;
+    private int status;
     private User user; // reference
 
-    public Transaksi(int idTransaksi, int idUser, float totalHarga, Date tglTransaksi, User user) {
+    public Transaksi(int idTransaksi, int idUser, float totalHarga, Date tglTransaksi, int status, User user) {
         this.idTransaksi = idTransaksi;
         this.idUser = user.getIdUser();
         this.totalHarga = totalHarga;
         this.tglTransaksi = tglTransaksi;
+        this.status = status;
         this.user = user;
     }
 
@@ -37,6 +39,12 @@ public class Transaksi {
     }
     public void setTglTransaksi(Date tglTransaksi) {
         this.tglTransaksi = tglTransaksi;
+    }
+    public int getStatus() {
+        return status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
     }
     public User getUser() {
         return user;
