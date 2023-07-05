@@ -49,6 +49,11 @@ public class BrandController extends AllSql{
         Scanner scanner = new Scanner(System.in);
         System.out.print("data mana yang mau di update: ");
         String idbrand = scanner.nextLine();
+        if (!checkBrand(list, idbrand)) {
+            System.out.print("Tolong Data dengan benar");
+            scanner.close();
+            return;
+        }
         // BELUM ADA PENGECHECKAN MENGENAI DATA YANG DIPILIH OLEH USER
         System.out.print("masukkan data brand yang baru: ");
         String newbrand = scanner.nextLine();
@@ -78,5 +83,14 @@ public class BrandController extends AllSql{
             System.out.print("Something wrong in this area");
         }
 
+    }
+    private boolean checkBrand(ArrayList<Brand> list, String idbrand){
+        boolean t = false;
+        for (int i = 0; i < list.size(); i++) {            
+            if (idbrand.equals(Integer.toString(list.get(i).getIdBrand()))) {
+                t = true;
+            }
+        }
+        return t;
     }
 }
