@@ -13,6 +13,12 @@ public class User {
         this.role = role;
         this.active = active;
     }
+    public User(int idUser, String username, int role, int active) {
+        this.idUser = idUser;
+        this.username = username;
+        this.role = role;
+        this.active = active;
+    }
     public String getUsername() {
         return username;
     }

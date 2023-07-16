@@ -1,8 +1,6 @@
 package app.Admin;
 import java.util.Scanner;
 
-import entity.Produk;
-
 public class Admin {
     public void menu() throws Exception {
         Scanner scanner = new Scanner(System.in);

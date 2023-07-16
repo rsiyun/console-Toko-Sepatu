@@ -38,7 +38,10 @@ public class Auth extends AllSql{
 
         System.out.print("Password: ");
         String password = scanner.nextLine();
-        scanner.close();
+        // scanner.close();
+        if (checkLogin(username, password, getUserList()) == null) {
+            System.out.println("Username dan Password Salah");
+        }
         return checkLogin(username, password, getUserList());
     }
    public User checkLogin(String username, String password, ArrayList<User> userList){
@@ -54,7 +57,7 @@ public class Auth extends AllSql{
    public void processRegister() throws Exception {
         getDataUser();
         System.out.println("Register Page");
-        try (Scanner scanner = new Scanner(System.in)) {
+        Scanner scanner = new Scanner(System.in);
             System.out.print("Username: ");
             String username = scanner.nextLine();
             for (int i = 0; i < getUserList().size(); i++) {
@@ -65,8 +68,7 @@ public class Auth extends AllSql{
             }
             System.out.print("Password: ");
             String password = scanner.nextLine();
-            scanner.close();
+            // scanner.close();
             insertUser(username, password);
-        }
    }
 }

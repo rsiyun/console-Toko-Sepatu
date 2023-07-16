@@ -13,11 +13,11 @@ import entity.User;
 public class AllSql extends ExecuteSql{
     // User
     public ArrayList<User> selectUser() throws Exception{
-        String selectUser = "SELECT id_user, username, password, role, active FROM users";
+        String selectUser = "SELECT id_user, username, role, active FROM users";
         ResultSet rs = this.sqlquerry(selectUser);
         ArrayList<User> list = new ArrayList<User>();
         while (rs.next()) {
-            User user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getString("password"), rs.getInt("role"), rs.getInt("active"));
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getInt("role"), rs.getInt("active"));
             list.add(user);
         }
         return list;
@@ -80,21 +80,6 @@ public class AllSql extends ExecuteSql{
             Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), 0, brand); //produk
             ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), produk);//produk detail
             Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);//transaksi
-            TransaksiDetail transaksiDetail = new TransaksiDetail(rs.getInt("id_detail_transaksi"), rs.getInt("id_transaksi"), rs.getInt("id_produk_detail"), rs.getFloat("harga"), rs.getInt("quantity"), transaksi, produkDetail);
-            list.add(transaksiDetail);
-        }
-        return list;
-    }
-    public ArrayList<TransaksiDetail> selectTransaksiDetail() throws Exception {
-        String sql = "SELECT id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_produk_detail, harga, quantity, transaksi.id_user, transaksi.total_harga, transaksi.tgl_transaksi, transaksi.status, produk_detail.id_produk, produk_detail.ukuran, produk_detail.warna, produk_detail.stock FROM detail_transaksi INNER JOIN transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi INNER JOIN produk_detail ON detail_transaksi.id_produk_detail = produk_detail.id_produk_detail;";
-        ResultSet rs = this.sqlquerry(sql);
-        ArrayList<TransaksiDetail> list = new ArrayList<TransaksiDetail>();
-        while (rs.next()){
-            // User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));
-            // Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
-            // Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), rs.getFloat("harga"), brand);
-            ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), null);
-            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), null);
             TransaksiDetail transaksiDetail = new TransaksiDetail(rs.getInt("id_detail_transaksi"), rs.getInt("id_transaksi"), rs.getInt("id_produk_detail"), rs.getFloat("harga"), rs.getInt("quantity"), transaksi, produkDetail);
             list.add(transaksiDetail);
         }

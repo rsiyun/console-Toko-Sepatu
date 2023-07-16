@@ -54,7 +54,6 @@ public class BrandController extends AllSql{
             scanner.close();
             return;
         }
-        // BELUM ADA PENGECHECKAN MENGENAI DATA YANG DIPILIH OLEH USER
         System.out.print("masukkan data brand yang baru: ");
         String newbrand = scanner.nextLine();
         String sql = "UPDATE brand SET brand = '"+newbrand+"' WHERE id_brand= "+idbrand+"";
