@@ -4,6 +4,7 @@ import app.Auth;
 import app.Admin.Admin;
 import entity.User;
 import app.User.UserView;
+import service.BaseAuth;
 import service.Enum.RoleUsers;
 
 public class App {
@@ -12,7 +13,9 @@ public class App {
     public static void main(String[] args) throws Exception {
         App app = new App();
         app.run();
-        
+        BaseAuth baseAuth = BaseAuth.getInstance();
+        app.user.setPassword("");
+        baseAuth.setUser(app.user);
         if (app.user.getRole() == RoleUsers.Admin.value || app.user.getRole() == RoleUsers.superAdmin.value) {
             Admin admin = new Admin();
             admin.menu();
@@ -41,6 +44,7 @@ public class App {
         if (user == null) {
             run();
         }
+        System.out.println("Login berhasil!");
     }
 
 }

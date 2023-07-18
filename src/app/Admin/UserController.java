@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import entity.User;
 import service.AllSql;
+import service.BaseAuth;
 import service.CommandLineTable;
 import service.Enum;
 
@@ -29,6 +30,7 @@ public class UserController extends AllSql{
     }
 
     public void UpdateUser() throws Exception{
+        BaseAuth baseAuth = BaseAuth.getInstance();
         ArrayList<User> listUser = this.selectUser();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan id user yang ingin diubah : ");
@@ -38,23 +40,27 @@ public class UserController extends AllSql{
             scanner.close();
             return;
         }
-
-        System.out.println("Apa yang mau diubah?");
-        System.out.println("1. Mengubah Role User");    
-        System.out.println("2. Mengubah Status User");
-        System.out.print("Pilih Pilihan anda: ");
-        int pilihan = scanner.nextInt();
-        switch (pilihan) {
-            case 1:
-                this.UpdateRoleUser(listUser, idUser);
-                break;
-            case 2:
-                this.UpdateStatusUser(listUser, idUser);
-                break;
-            default:
-                System.out.println("Pilihan tidak ada");
-                break;
+        if (baseAuth.getUser().getRole() == 2) {
+            System.out.println("Apa yang mau diubah?");
+            System.out.println("1. Mengubah Role User");    
+            System.out.println("2. Mengubah Status User");
+            System.out.print("Pilih Pilihan anda: ");
+            int pilihan = scanner.nextInt();
+            switch (pilihan) {
+                case 1:
+                    this.UpdateRoleUser(listUser, idUser);
+                    break;
+                case 2:
+                    this.UpdateStatusUser(listUser, idUser);
+                    break;
+                default:
+                    System.out.println("Pilihan tidak ada");
+                    break;
+            }
+        }else if(baseAuth.getUser().getActive() == 1){
+            this.UpdateStatusUser(listUser, idUser);
         }
+
         scanner.close();
     }
     private void ShowUser() throws Exception{
