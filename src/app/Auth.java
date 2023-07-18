@@ -41,13 +41,15 @@ public class Auth extends AllSql{
         // scanner.close();
         if (checkLogin(username, password, getUserList()) == null) {
             System.out.println("Username dan Password Salah");
+        }else if (checkLogin(username, password, getUserList()).getActive() == 0) {
+            System.out.println("\n Anda telah di ban");
+            return null;
         }
         return checkLogin(username, password, getUserList());
     }
    public User checkLogin(String username, String password, ArrayList<User> userList){
         for (int i = 0; i < userList.size(); i++) {
             if (username.equals(userList.get(i).getUsername()) && password.equals(userList.get(i).getPassword())) {
-                System.out.println("Login berhasil!");
                 return userList.get(i);
             }
         }
