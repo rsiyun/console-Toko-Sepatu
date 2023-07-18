@@ -1,22 +1,14 @@
 package entity;
 
 public class Cart {
-    private int cartId;
     private int idProdukDetail;
     private int quantity;
     private ProdukDetail produkDetail;
 
-    public Cart(int cartId, int idProdukDetail, int quantity, ProdukDetail produkDetail){
-        this.cartId = cartId;
+    public Cart(int idProdukDetail, int quantity, ProdukDetail produkDetail){
         this.idProdukDetail = idProdukDetail;
         this.quantity = quantity;
         this.produkDetail = produkDetail;
-    }
-    public int getCartId() {
-        return cartId;
-    }
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
     }
     public int getQuantity() {
         return quantity;
