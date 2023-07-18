@@ -21,7 +21,6 @@ public class ProdukController extends AllSql{
                 break;
             case "2":
                 searchProduk();
-                ProdukDetailUser();
                 break;
             default:
                 System.out.println("Pilihan tidak ada");
@@ -54,9 +53,24 @@ public class ProdukController extends AllSql{
             scanner.close();
             return;
         }
-        scanner.close();
+        if(!checkProdukDetail(Integer.parseInt(idProduk))){
+            System.out.println("Detail Produk belum ada");
+            return;
+        }
         Produk produkTerpilih = getProdukbyid(listProduk, idProduk);
         showProdukTerpilih(produkTerpilih);
+    }
+
+    private boolean checkProdukDetail(int idProduk) throws Exception{
+        boolean result = false;
+        ArrayList<ProdukDetail> listProdukDetail = this.selectProdukDetail();
+        for (ProdukDetail produkDetail : listProdukDetail){
+            if (produkDetail.getidProduk() == idProduk) {
+                result = true;
+                return result;
+            }
+        }
+        return result;
     }
 
     private void showProdukTerpilih(Produk produkTerpilih) throws Exception{
@@ -90,6 +104,10 @@ public class ProdukController extends AllSql{
         System.out.print("Masukkan nama produk yang ingin dicari : ");
         String namaProduk = scanner.nextLine();
         ArrayList<Produk> listProduk = this.listProdukbySearch(namaProduk);
+        if (listProduk.size() == 0 ) {
+            System.out.println("\n Yang anda cari tidak ditemukan \n");
+            return;
+        }
         CommandLineTable table = new CommandLineTable();
         table.setShowVerticalLines(true);
         table.setHeaders("Id Produk", "Nama Produk", "Nama Brand","Harga");
@@ -98,7 +116,19 @@ public class ProdukController extends AllSql{
             table.addRow(String.valueOf(produk.getIdProduk()), produk.getNamaProduct(), brand.getBrand(), String.valueOf(produk.getHarga()));
         }
         table.print();
-        scanner.close();
+        System.out.print("Masukkan id produk yang ingin di lihat detailnya : ");
+        String idProduk = scanner.nextLine();
+        if(!checkProduk(listProduk, idProduk)){
+            System.out.println("Tolong Input id dengan benar");
+            scanner.close();
+            return;
+        }
+        if(!checkProdukDetail(Integer.parseInt(idProduk))){
+            System.out.println("Detail Produk belum ada");
+            return;
+        }
+        Produk produkTerpilih = getProdukbyid(listProduk, idProduk);
+        showProdukTerpilih(produkTerpilih);
     }
     public ArrayList<Produk> listProdukbySearch(String namaProduk) throws Exception{
         ArrayList<Produk> listProduk = this.selectProduk();
