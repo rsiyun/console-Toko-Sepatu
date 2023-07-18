@@ -1,8 +1,10 @@
 package app.Admin;
 import java.util.Scanner;
+import service.CommandLineCleaner;
 
 public class Admin {
     public void menu() throws Exception {
+        CommandLineCleaner clClear = new CommandLineCleaner();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Selamat Datang Admin: ");
         System.out.println("1. List Brand");
@@ -11,6 +13,7 @@ public class Admin {
         System.out.println("4. List User");
         System.out.print("Pilih Pilihan anda: ");
         String pilihan = scanner.nextLine();
+        clClear.clear();
         switch (pilihan) {
             case "1":
                 BrandController bc = new BrandController();
@@ -33,6 +36,8 @@ public class Admin {
                 break;
         
             default:
+                System.out.println("Pilihan tidak ada");
+                menu();
                 break;
         }
         scanner.close();
