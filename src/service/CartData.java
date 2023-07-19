@@ -21,6 +21,26 @@ public class CartData {
         return carts;
     }
 
+    public void truncateCarts(){
+        this.carts.clear();
+    }
+
+    public void changeQuantitiy(int idProdukDetail, int quantity){
+        for (int i = 0; i < this.carts.size(); i++) {
+            if (this.carts.get(i).getIdProdukDetail() == idProdukDetail) {
+                this.carts.get(i).setQuantity(quantity);
+            }            
+        }
+    }
+
+    public void deleteCart(int idProdukDetail){
+        for (int i = 0; i < this.carts.size(); i++) {
+            if (this.carts.get(i).getIdProdukDetail() == idProdukDetail) {
+                this.carts.remove(i);
+            }            
+        }
+    }
+
     public void addCart(Cart cart) {
         this.carts.add(cart);
     }

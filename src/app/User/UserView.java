@@ -26,12 +26,13 @@ public class UserView {
                 pdc.ProdukUser();
                 break;
             case "2":
-                System.out.println("Transaksi");
+                TransaksiController tc = new TransaksiController();
+                tc.mainTransaksi();
                 break;
         
             case "3":
                 CartController cartCon = new CartController();
-                cartCon.showCart();
+                cartCon.mainCart();
                 break;
             case "4":
                 baseAuth.setUser(null);

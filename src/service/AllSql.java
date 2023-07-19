@@ -1,6 +1,9 @@
 package service;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import entity.Brand;
@@ -85,6 +88,21 @@ public class AllSql extends ExecuteSql{
         }
         return list;
     }
+    public ArrayList<TransaksiDetail> selectTransaksiDetailbyIdtransaksi(int idTransaksi, int idUser) throws Exception {
+        String sql = "SELECT id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_produk_detail, detail_transaksi.harga, quantity, transaksi.id_user, transaksi.total_harga, transaksi.tgl_transaksi, transaksi.status, produk_detail.id_produk, produk_detail.ukuran, produk_detail.warna, produk_detail.stock, produk.id_brand, produk.nama_product, brand.brand, users.username, users.active FROM detail_transaksi INNER JOIN transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi INNER JOIN produk_detail ON detail_transaksi.id_produk_detail = produk_detail.id_produk_detail INNER JOIN produk ON produk_detail.id_produk = produk.id_produk INNER JOIN brand ON produk.id_brand = brand.id_brand INNER JOIN users ON transaksi.id_user = users.id_user WHERE detail_transaksi.id_transaksi = "+idTransaksi+" AND transaksi.id_user = "+idUser+";";
+        ResultSet rs = this.sqlquerry(sql);
+        ArrayList<TransaksiDetail> list = new ArrayList<TransaksiDetail>();
+        while (rs.next()){
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));//user
+            Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
+            Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), 0, brand); //produk
+            ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), produk);//produk detail
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);//transaksi
+            TransaksiDetail transaksiDetail = new TransaksiDetail(rs.getInt("id_detail_transaksi"), rs.getInt("id_transaksi"), rs.getInt("id_produk_detail"), rs.getFloat("harga"), rs.getInt("quantity"), transaksi, produkDetail);
+            list.add(transaksiDetail);
+        }
+        return list;
+    }
     public ArrayList<Transaksi> selectTransaksi() throws Exception{
         String sql = "SELECT id_transaksi, transaksi.id_user, total_harga, tgl_transaksi, status, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user;";
         ResultSet rs = this.sqlquerry(sql);
@@ -95,5 +113,66 @@ public class AllSql extends ExecuteSql{
             list.add(transaksi);
         }
         return list;
+    }
+
+    public ArrayList<Transaksi> selectTransaksiByIdUser(int idUser) throws Exception{
+        String sql = "SELECT id_transaksi, transaksi.id_user, total_harga, tgl_transaksi, status, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user WHERE users.id_user = "+idUser+";";
+        ResultSet rs = this.sqlquerry(sql);
+        ArrayList<Transaksi> list = new ArrayList<Transaksi>();
+        while (rs.next()) {
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
+            list.add(transaksi);
+        }
+        return list;
+    }
+
+    public void insertTransaksi(int idUser, float totalHargaOrder, int orderstts, CartData cartData){
+        ResultSet rs = null;
+        Conn conn = null;
+        try {
+            conn = new Conn();
+            PreparedStatement stmtTransaksi;
+            PreparedStatement stmtDetailTransaksi = null;
+            
+            // insert data transaksi
+            String sqlTransaksi = "INSERT INTO transaksi (id_user, total_harga, tgl_transaksi, status) VALUES (?, ?, (SELECT CURRENT_TIMESTAMP), ?)";
+            stmtTransaksi = conn.getConnection().prepareStatement(sqlTransaksi, Statement.RETURN_GENERATED_KEYS);
+            stmtTransaksi.setInt(1,idUser);
+            stmtTransaksi.setDouble(2, totalHargaOrder);
+            stmtTransaksi.setInt(3, orderstts);
+            stmtTransaksi.executeUpdate();
+
+            rs = stmtTransaksi.getGeneratedKeys();
+            if (rs.next()) {
+                int idTransaksi = rs.getInt(1);
+                for (int i = 0; i < cartData.getCarts().size(); i++) {        
+                    float totalHarga = cartData.getCarts().get(i).getProdukDetail().getProduk().getHarga() * cartData.getCarts().get(i).getQuantity();            
+                    String sqlDetailTransaksi = "INSERT INTO detail_transaksi (id_transaksi, id_produk_detail, harga, quantity) VALUES (?, ?, ?, ?)";
+                    stmtDetailTransaksi = conn.getConnection().prepareStatement(sqlDetailTransaksi);
+                    stmtDetailTransaksi.setInt(1, idTransaksi);
+                    stmtDetailTransaksi.setInt(2, cartData.getCarts().get(i).getIdProdukDetail());
+                    stmtDetailTransaksi.setFloat(3, totalHarga);
+                    stmtDetailTransaksi.setInt(4, cartData.getCarts().get(i).getQuantity());
+                    stmtDetailTransaksi.executeUpdate();
+                }
+            }
+
+            // tutup koneksi
+            rs.close();
+            stmtTransaksi.close();
+            stmtDetailTransaksi.close();
+            conn.close();
+        } catch (SQLException e) {
+            // rollback transaksi jika terjadi error
+            try {
+                if (conn.getConnection() != null) {
+                    conn.getConnection().rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        }
     }
 }
