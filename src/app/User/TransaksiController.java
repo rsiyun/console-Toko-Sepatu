@@ -3,7 +3,6 @@ package app.User;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import entity.ProdukDetail;
 import entity.Transaksi;
 import entity.TransaksiDetail;
 import service.AllSql;
@@ -21,7 +20,8 @@ public class TransaksiController extends AllSql{
             Scanner scanner = new Scanner(System.in);
             ArrayList<Transaksi> list = this.selectTransaksiByIdUser(baseAuth.getUser().getIdUser());
             System.out.println("1. Pembayaran Transaksi");
-            System.out.println("2. back");
+            System.out.println("2. Histori Transaksi");
+            System.out.println("3. back");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
             clClear.clear();
@@ -31,6 +31,9 @@ public class TransaksiController extends AllSql{
                     changeStatus(baseAuth.getUser().getIdUser());
                     break;
                 case "2":
+                    showTransaction(list);
+                    break;
+                case "3":
                     endwhile = false;
                     UserView userView = new UserView();
                     userView.menu();
@@ -43,6 +46,10 @@ public class TransaksiController extends AllSql{
     }
 
     private void showTransaction(ArrayList<Transaksi> list)throws Exception{
+        if(list.isEmpty()){
+            System.out.println("\n\n Belum ada Transaksi \n\n");
+            return;
+        }
         CommandLineTable table = new CommandLineTable();
         table.setShowVerticalLines(true);
         table.setHeaders("Id Transaksi", "Tanggal Transaksi", "Total Harga", "Status");
@@ -66,9 +73,9 @@ public class TransaksiController extends AllSql{
         }
         CommandLineTable table = new CommandLineTable();
         table.setShowVerticalLines(true);
-        table.setHeaders("Nama Produk", "Ukuran", "Warna", "Harga", "Jumlah barang");
+        table.setHeaders( "Nama Produk", "Nama Brand", "Ukuran", "Warna", "Harga", "Jumlah barang");
         for (TransaksiDetail transaksiDetail : listDetail) {
-            table.addRow(transaksiDetail.getProdukDetail().getProduk().getNamaProduct(), transaksiDetail.getProdukDetail().getUkuran()+"", transaksiDetail.getProdukDetail().getWarna(), transaksiDetail.getHarga()+"", transaksiDetail.getQuantity()+"");
+            table.addRow(transaksiDetail.getProdukDetail().getProduk().getNamaProduct(), transaksiDetail.getProdukDetail().getProduk().getBrand().getBrand(), transaksiDetail.getProdukDetail().getUkuran()+"", transaksiDetail.getProdukDetail().getWarna(), transaksiDetail.getHarga()+"", transaksiDetail.getQuantity()+"");
         }
         table.print();
         if (listDetail.get(0).getTransaksi().getStatus() != 0) {
@@ -81,10 +88,10 @@ public class TransaksiController extends AllSql{
         System.out.print("Apakah Anda yakin membeli Barang Tersebut ? [y/n]: ");
         String pilihan = scanner.nextLine();
         if (pilihan.equals("y") || pilihan.equals("Y")) {
-           String sql = "UPDATE transaksi SET status = 1 WHERE id_transaksi = "+idTransaksi+";";
-           sqlexupdate(sql);
-           stockBerkurang(listDetail);
-           System.out.println("\n Barang Berhasil sudah Dibayar \n");
+            String sql = "UPDATE transaksi SET status = 1 WHERE id_transaksi = "+idTransaksi+";";
+            sqlexupdate(sql);
+            stockBerkurang(listDetail);
+            System.out.println("\n Barang Berhasil sudah Dibayar \n");
         }
 
     }

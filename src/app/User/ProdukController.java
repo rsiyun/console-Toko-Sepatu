@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import entity.Produk;
 import entity.ProdukDetail;
-import entity.Brand;
 import entity.Cart;
 import service.AllSql;
 import service.CartData;
@@ -14,29 +13,29 @@ public class ProdukController extends AllSql{
     public void ProdukUser()throws Exception{
         boolean endwhile = true;
         while(endwhile){
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("1. Tampilkan Semua Produk");
-            System.out.println("2. Cari Produk");
-            System.out.println("3. back");
-            System.out.print("Pilih Pilihan anda: ");
-            String pilihan = scanner.nextLine();
-            switch (pilihan) {
-                case "1":
-                    showProduk();
-                    ProdukDetailUser();
-                    break;
-                case "2":
-                    searchProduk();
-                    break;
-                case "3":
-                    endwhile = false;
-                    UserView userView = new UserView();
-                    userView.menu();
-                    break;
-                default:
-                    System.out.println("Pilihan tidak ada");
-                    break;
-            }
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1. Tampilkan Semua Produk");
+        System.out.println("2. Cari Produk");
+        System.out.println("3. back");
+        System.out.print("Pilih Pilihan anda: ");
+        String pilihan = scanner.nextLine();
+        switch (pilihan) {
+            case "1":
+                showProduk();
+                ProdukDetailUser();
+                break;
+            case "2":
+                searchProduk();
+                break;
+            case "3":
+                endwhile = false;
+                UserView userView = new UserView();
+                userView.menu();
+                break;
+            default:
+                System.out.println("Pilihan tidak ada");
+                break;
+        }
         }
     }
     public void showProduk() throws Exception{
@@ -46,8 +45,7 @@ public class ProdukController extends AllSql{
             table.setShowVerticalLines(true);
             table.setHeaders("Id Produk", "Nama Produk", "Nama Brand", "Harga");
             for (Produk produk : listProduk) {
-                Brand brand = getBrandByProduk(produk);
-                table.addRow(String.valueOf(produk.getIdProduk()), produk.getNamaProduct(), brand.getBrand(), String.valueOf(produk.getHarga()));
+                table.addRow(String.valueOf(produk.getIdProduk()), produk.getNamaProduct(), produk.getBrand().getBrand(), String.valueOf(produk.getHarga()));
             }
             table.print();
         }catch (Exception e){
@@ -67,10 +65,10 @@ public class ProdukController extends AllSql{
             System.out.println("\n Detail Produk belum ada \n");
             return;
         }
-        // DI EDIT SEPERTI searchProduk
+
         Produk produkTerpilih = getProdukbyid(listProduk, idProduk);
         showProdukTerpilih(produkTerpilih);
-        
+        addProducttoCart(scanner);
     }
 
     private boolean checkProdukDetailbyIdProduk(int idProduk) throws Exception{
@@ -83,23 +81,22 @@ public class ProdukController extends AllSql{
 
     private ProdukDetail checkProdukDetail(ArrayList<ProdukDetail> list, int idProdukDetail){
         ProdukDetail result = null;
-             for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getIdProdukDetail() == idProdukDetail) {
                     result = list.get(i);
-                    return result;
-                }
-             }
+                return result;
+            }
+        }
         return result;
     }
 
     private void showProdukTerpilih(Produk produkTerpilih){
         try{
             Produk produk = produkTerpilih;
-            Brand brand = getBrandByProduk(produk);
             CommandLineTable tableProduk = new CommandLineTable();
             tableProduk.setShowVerticalLines(true);
             tableProduk.setHeaders("Nama Produk", "Nama Brand", "Harga");
-            tableProduk.addRow(produk.getNamaProduct(), brand.getBrand(), String.valueOf(produk.getHarga()));
+            tableProduk.addRow(produk.getNamaProduct(), produk.getBrand().getBrand(), String.valueOf(produk.getHarga()));
             tableProduk.print();
             showProdukDetail(list);
 
@@ -112,12 +109,11 @@ public class ProdukController extends AllSql{
         tableProdukDetail.setShowVerticalLines(true);
         tableProdukDetail.setHeaders("Id Produk Detail", "Ukuran", "Warna", "Stok");
         for (ProdukDetail produkDetail : list) {
-            tableProdukDetail.addRow(String.valueOf(produkDetail.getIdProdukDetail()), String.valueOf(produkDetail.getUkuran()), produkDetail.getWarna(), String.valueOf(produkDetail.getStock()));
-        }
+                tableProdukDetail.addRow(String.valueOf(produkDetail.getIdProdukDetail()), String.valueOf(produkDetail.getUkuran()), produkDetail.getWarna(), String.valueOf(produkDetail.getStock()));
+            }
         tableProdukDetail.print();
     }
     public void searchProduk() throws Exception{
-        CartData cartData = CartData.getInstance();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan nama produk yang ingin dicari : ");
         String namaProduk = scanner.nextLine();
@@ -130,8 +126,7 @@ public class ProdukController extends AllSql{
         table.setShowVerticalLines(true);
         table.setHeaders("Id Produk", "Nama Produk", "Nama Brand","Harga");
         for (Produk produk : listProduk) {
-            Brand brand = getBrandByProduk(produk);
-            table.addRow(String.valueOf(produk.getIdProduk()), produk.getNamaProduct(), brand.getBrand(), String.valueOf(produk.getHarga()));
+            table.addRow(String.valueOf(produk.getIdProduk()), produk.getNamaProduct(), produk.getBrand().getBrand(), String.valueOf(produk.getHarga()));
         }
         table.print();
         System.out.print("Masukkan id produk yang ingin di lihat detailnya : ");
@@ -146,11 +141,20 @@ public class ProdukController extends AllSql{
         }
         Produk produkTerpilih = getProdukbyid(listProduk, idProduk);
         showProdukTerpilih(produkTerpilih);
+        addProducttoCart(scanner);
+    }
+    private void addProducttoCart(Scanner scanner){        
+        CartData cartData = CartData.getInstance();
+        
         System.out.print("Masukkan id produk detail yang ingin dibeli : ");
         String idProdukDetail = scanner.nextLine();
         ProdukDetail pd = checkProdukDetail(list, Integer.parseInt(idProdukDetail));
         if (pd == null) {
             System.out.println("\n Tolong masukkan id produk detail dengan benar \n");
+            return;
+        }
+        if (pd.getStock() == 0) {
+            System.out.println("\n Stock Habis \n");
             return;
         }
         int quantityR = -1;
@@ -165,8 +169,6 @@ public class ProdukController extends AllSql{
         }
         Cart cart = new Cart(Integer.parseInt(idProdukDetail), quantityR, pd);
         cartData.addCart(cart);
-        
-
     }
 
     private int quantityForm(Scanner scanner, ProdukDetail pd){
@@ -205,16 +207,6 @@ public class ProdukController extends AllSql{
             if (list.get(i).getIdProduk() == Integer.parseInt(idproduk)) {
                 Produk oldData = new Produk(list.get(i).getIdProduk(), list.get(i).getidBrand(), list.get(i).getNamaProduct(), list.get(i).getHarga(), list.get(i).getBrand());
                 return oldData;
-            }
-        }
-        return null;
-    }
-    private Brand getBrandByProduk(Produk produk) throws Exception{
-        ArrayList<Brand> listBrand = this.selectBrand();
-        for (int i = 0; i < listBrand.size(); i++) {
-            if (listBrand.get(i).getIdBrand() == produk.getidBrand()) {
-                Brand brand = new Brand(listBrand.get(i).getIdBrand(), listBrand.get(i).getBrand());
-                return brand;
             }
         }
         return null;

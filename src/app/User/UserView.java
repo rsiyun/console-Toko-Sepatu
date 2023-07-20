@@ -14,7 +14,7 @@ public class UserView {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Selamat Datang User: " + baseAuth.getUser().getUsername());
         System.out.println("1. Belanja Sepatu");
-        System.out.println("2. History Transaksi");
+        System.out.println("2. Daftar Transaksi");
         System.out.println("3. Keranjang");
         System.out.println("4. Logout");
         System.out.print("Pilih Pilihan anda: ");

@@ -133,7 +133,7 @@ public class ProdukController extends AllSql{
             ArrayList<Produk> list = this.selectProduk();
             CommandLineTable st = new CommandLineTable();
             st.setShowVerticalLines(true);
-            st.setHeaders("id produk", "Nama Produk", "Produk", "Harga");
+            st.setHeaders("id produk", "Nama Produk", "Nama Brand", "Harga");
             for (int i = 0; i < list.size(); i++) {
                 st.addRow(Integer.toString(list.get(i).getIdProduk()), list.get(i).getNamaProduct(), list.get(i).getBrand().getBrand(), String.valueOf(list.get(i).getHarga()));
             }

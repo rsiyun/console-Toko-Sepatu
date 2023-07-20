@@ -26,8 +26,8 @@ public class CartController  extends AllSql {
         while(endwhile){
             Scanner scanner = new Scanner(System.in);
             System.out.println("1. Tampilkan Semua cart");
-            System.out.println("2. Ubah Quantity");
-            System.out.println("3. Hapus Cart");
+            System.out.println("2. Ubah Jumlah Barang");
+            System.out.println("3. Hapus Barang");
             System.out.println("4. Checkout");
             System.out.println("5. back");
             System.out.print("Pilih Pilihan anda: ");
@@ -37,10 +37,12 @@ public class CartController  extends AllSql {
                     showCart();
                     break;
                 case "2":
-                    System.out.print("Ubah Quantity");
+                    showCart();
+                    updateQuantity();
                     break;
                 case "3":
-                    System.out.print("Hapus Cart");
+                    showCart();
+                    deleteSomeProduct();
                     break;
                 case "4" :
                     // showCart();
@@ -67,29 +69,30 @@ public class CartController  extends AllSql {
             transaction(cartData);
             return;
         }
-        System.out.println("Pembayaran dibatalkan");
+        System.out.println("Pemesanan dibatalkan");
         return;
         
     }
     private void transaction(CartData cartData){
         BaseAuth baseAuth = BaseAuth.getInstance();
-        if (!checkStock()) {
+        if (!checkAllStock()) {
             return;
         }
         cartData = CartData.getInstance();
-        float allHarga = 0;
-        
         for (int i = 0; i < cartData.getCarts().size(); i++) {
-            allHarga += cartData.getCarts().get(i).getProdukDetail().getProduk().getHarga();
-        }
-        for (int i = 0; i < cartData.getCarts().size(); i++) {
-            this.insertTransaksi(baseAuth.getUser().getIdUser(), allHarga, StatusTransaksi.dipesan.value, cartData);
+            this.insertTransaksi(baseAuth.getUser().getIdUser(), jumlahHarga(cartData), StatusTransaksi.dipesan.value, cartData);
         }
         cartData.truncateCarts();
-        
-
     }
-    private boolean checkStock(){
+    private float jumlahHarga(CartData cartData){
+        float totalHarga = 0;
+        for (int i = 0; i < cartData.getCarts().size(); i++) {
+            totalHarga += cartData.getCarts().get(i).getProdukDetail().getProduk().getHarga() * cartData.getCarts().get(i).getQuantity();
+        }
+        return totalHarga;
+    }
+
+    private boolean checkAllStock(){
         try {
             perbaruiStock();
         } catch (Exception e) {
@@ -105,7 +108,7 @@ public class CartController  extends AllSql {
                 quantityR = false;
             }         
         }
-       return quantityR;
+        return quantityR;
     }
     private void perbaruiStock() throws Exception{
         CartData cartData = CartData.getInstance();
@@ -122,12 +125,70 @@ public class CartController  extends AllSql {
         CartData cartData = CartData.getInstance();
         CommandLineTable table = new CommandLineTable();
         table.setShowVerticalLines(true);
-        table.setHeaders("Nama Produk", "Ukuran", "Warna", "Total Harga", "quantity");
+        table.setHeaders("No", "Nama Produk", "Nama Brand", "Ukuran", "Warna", "Total Harga", "quantity");
         for (int i = 0; i < cartData.getCarts().size(); i++) {
             float totalHarga = cartData.getCarts().get(i).getProdukDetail().getProduk().getHarga() * cartData.getCarts().get(i).getQuantity();
-            table.addRow(cartData.getCarts().get(i).getProdukDetail().getProduk().getNamaProduct(),cartData.getCarts().get(i).getProdukDetail().getUkuran()+"",cartData.getCarts().get(i).getProdukDetail().getWarna() , totalHarga+"",  cartData.getCarts().get(i).getQuantity()+"");
+            table.addRow(i+1+"", cartData.getCarts().get(i).getProdukDetail().getProduk().getNamaProduct(),cartData.getCarts().get(i).getProdukDetail().getProduk().getBrand().getBrand(),cartData.getCarts().get(i).getProdukDetail().getUkuran()+"",cartData.getCarts().get(i).getProdukDetail().getWarna() , totalHarga+"",  cartData.getCarts().get(i).getQuantity()+"");
         }
         table.print();
+        System.out.println("Total Harga : " + jumlahHarga(cartData));
     }
-
+    private void updateQuantity(){
+        CartData cartData = CartData.getInstance();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Masukkan nomer produk yang ingin diubah : ");
+        String noProduk = scanner.nextLine();
+        if (cartData.getCarts().size() < Integer.parseInt(noProduk) && 1 > Integer.parseInt(noProduk)) {
+            System.out.println("Masukkan nomer Produk dengan benar");
+            return;
+        }
+        // stock checker
+        if (cartData.getCarts().get(Integer.parseInt(noProduk)-1).getProdukDetail().getStock() == 0) {
+            System.out.println("\n Stock Habis, Harap hapus barang \n");
+            return;
+        }
+        int quantity = -1;
+        while (quantity == -1) {
+            quantity = quantityForm(scanner, cartData.getCarts().get(Integer.parseInt(noProduk)-1).getProdukDetail());
+        }
+        
+        for (int i = 0; i < cartData.getCarts().size(); i++) {
+            if (cartData.getCarts().get(i).getIdProdukDetail() == cartData.getCarts().get(Integer.parseInt(noProduk)-1).getIdProdukDetail()) {
+                cartData.getCarts().get(i).setQuantity(quantity);
+            }
+        }
+        System.out.println("Berhasil diubah");
+    }
+    private void deleteSomeProduct(){
+        CartData cartData = CartData.getInstance();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Masukkan nomer produk yang ingin diubah : ");
+        String noProduk = scanner.nextLine();
+        if (cartData.getCarts().size() < Integer.parseInt(noProduk) && 1 > Integer.parseInt(noProduk)) {
+            System.out.println("Masukkan nomer Produk dengan benar");
+            return;
+        }
+        System.out.println("Apakah anda yakin ingin menghapus produk ini ? [y/n] : ");
+        String pilihan = scanner.nextLine();
+        if (pilihan.equals("Y") || pilihan.equals("y")) {
+            for (int i = 0; i < cartData.getCarts().size(); i++) {
+                if (cartData.getCarts().get(i).getIdProdukDetail() == cartData.getCarts().get(Integer.parseInt(noProduk)-1).getIdProdukDetail()) {
+                    cartData.getCarts().remove(i);
+                }
+            }
+            System.out.println("Berhasil dihapus");
+        }
+    }
+    private int quantityForm(Scanner scanner, ProdukDetail pd){
+        System.out.print("Masukkan Jumlah barang : ");
+        String quantity = scanner.nextLine();
+        if (pd.getStock() < Integer.parseInt(quantity)) {
+            System.out.println("\n Stock Tidak Mencukupi\n");
+            return -1;
+        }else if(Integer.parseInt(quantity) <= 0){
+            System.out.println("\n Jumlah harus melebihi 1 \n");
+            return -1;
+        }
+        return Integer.parseInt(quantity);
+    }
 }

@@ -128,10 +128,10 @@ public class TransaksiController extends AllSql{
         try{
             ArrayList<TransaksiDetail> list = this.selectTransaksiDetailbyIdtransaksi(id);
             CommandLineTable cmd = new CommandLineTable();
-            cmd.setHeaders("ID Detail Transaksi", "brand", "produk", "Harga", "Jumlah");
+            cmd.setHeaders("ID Detail Transaksi", "Produk", "Brand", "Ukuran", "Warna", "Harga", "Jumlah Barang");
             cmd.setShowVerticalLines(true);
             for(TransaksiDetail transaksiDetail : list){
-                cmd.addRow(String.valueOf(transaksiDetail.getIdDetailTransaksi()), transaksiDetail.getProdukDetail().getProduk().getBrand().getBrand(), transaksiDetail.getProdukDetail().getProduk().getNamaProduct(), String.valueOf(transaksiDetail.getHarga()), String.valueOf(transaksiDetail.getQuantity()));
+                cmd.addRow(transaksiDetail.getIdDetailTransaksi()+"", transaksiDetail.getProdukDetail().getProduk().getNamaProduct(), transaksiDetail.getProdukDetail().getProduk().getBrand().getBrand(), transaksiDetail.getProdukDetail().getUkuran()+"", transaksiDetail.getProdukDetail().getWarna(), transaksiDetail.getHarga()+"", transaksiDetail.getQuantity()+"");
             }
             cmd.print();
         } catch (Exception e){

@@ -18,13 +18,23 @@ public class AuthView {
             System.out.println("SELAMAT DATANG DI TOKO SEPATU KAMI");
             System.out.println("1. Login");
             System.out.println("2. Register");
+            System.out.println("3. Exit");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
-                if (pilihan.equals("1")) {
-                    user = auth.processLogin();
-                    System.out.print("\n");
-                }else{
-                    auth.processRegister();
+                switch (pilihan) {
+                    case "1":
+                        user = auth.processLogin();
+                        System.out.print("\n");
+                        break;
+                    case "2":
+                        auth.processRegister();
+                        break;
+                    case "3":
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Pilihan tidak ada");
+                        break;
                 }
             }
             System.out.println("Login berhasil!");
