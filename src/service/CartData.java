@@ -25,17 +25,17 @@ public class CartData {
         this.carts.clear();
     }
 
-    public void changeQuantitiy(int idProdukDetail, int quantity){
+    public void changeQuantitiy(int index, int quantity){
         for (int i = 0; i < this.carts.size(); i++) {
-            if (this.carts.get(i).getIdProdukDetail() == idProdukDetail) {
+            if (index == i) {
                 this.carts.get(i).setQuantity(quantity);
             }            
         }
     }
 
-    public void deleteCart(int idProdukDetail){
+    public void deleteCart(int index){
         for (int i = 0; i < this.carts.size(); i++) {
-            if (this.carts.get(i).getIdProdukDetail() == idProdukDetail) {
+            if (index == i) {
                 this.carts.remove(i);
             }            
         }

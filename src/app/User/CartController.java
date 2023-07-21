@@ -138,7 +138,7 @@ public class CartController  extends AllSql {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan nomer produk yang ingin diubah : ");
         String noProduk = scanner.nextLine();
-        if (cartData.getCarts().size() < Integer.parseInt(noProduk) && 1 > Integer.parseInt(noProduk)) {
+        if (cartData.getCarts().size() < Integer.parseInt(noProduk) || 1 > Integer.parseInt(noProduk)) {
             System.out.println("Masukkan nomer Produk dengan benar");
             return;
         }
@@ -151,32 +151,35 @@ public class CartController  extends AllSql {
         while (quantity == -1) {
             quantity = quantityForm(scanner, cartData.getCarts().get(Integer.parseInt(noProduk)-1).getProdukDetail());
         }
-        
-        for (int i = 0; i < cartData.getCarts().size(); i++) {
-            if (cartData.getCarts().get(i).getIdProdukDetail() == cartData.getCarts().get(Integer.parseInt(noProduk)-1).getIdProdukDetail()) {
-                cartData.getCarts().get(i).setQuantity(quantity);
-            }
-        }
+        cartData.changeQuantitiy(Integer.parseInt(noProduk)-1, quantity);
         System.out.println("Berhasil diubah");
     }
     private void deleteSomeProduct(){
         CartData cartData = CartData.getInstance();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Masukkan nomer produk yang ingin diubah : ");
+        System.out.print("Masukkan nomer produk yang ingin dihapus : ");
         String noProduk = scanner.nextLine();
-        if (cartData.getCarts().size() < Integer.parseInt(noProduk) && 1 > Integer.parseInt(noProduk)) {
+        if (cartData.getCarts().size() < Integer.parseInt(noProduk) || 1 > Integer.parseInt(noProduk)) {
             System.out.println("Masukkan nomer Produk dengan benar");
             return;
         }
         System.out.println("Apakah anda yakin ingin menghapus produk ini ? [y/n] : ");
         String pilihan = scanner.nextLine();
         if (pilihan.equals("Y") || pilihan.equals("y")) {
-            for (int i = 0; i < cartData.getCarts().size(); i++) {
-                if (cartData.getCarts().get(i).getIdProdukDetail() == cartData.getCarts().get(Integer.parseInt(noProduk)-1).getIdProdukDetail()) {
-                    cartData.getCarts().remove(i);
-                }
-            }
+            cartData.deleteCart(Integer.parseInt(noProduk)-1);
             System.out.println("Berhasil dihapus");
+        }
+        if (cartData.getCarts().isEmpty()) {
+            // Redirect Jika cart kosong
+            UserView userView = new UserView();
+            try {
+                System.out.println("\nCart Kosong");
+                System.out.println("Redirect to User ... \n");
+                Thread.sleep(2000);
+                userView.menu();   
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
     private int quantityForm(Scanner scanner, ProdukDetail pd){
