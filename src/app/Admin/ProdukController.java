@@ -12,40 +12,49 @@ import service.CommandLineTable;
 public class ProdukController extends AllSql{
     public void ProductAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1. Menampilkan data");
-        System.out.println("2. Menambah data");
-        System.out.println("3. Mengubah data");
-        System.out.println("4. Menghapus data");
-        System.out.println("5. Detail Produk");
-        System.out.print("Pilih Pilihan anda: ");
-        String pilihan = scanner.nextLine();
-        switch (pilihan) {
-            case "1":
-                showProduk();
-                break;
-        
-            case "2":
-                createProduk();
-                break;
-        
-            case "3":
-                showProduk();
-                updateProduk();
-                break;
-        
-            case "4":
-                showProduk();
-                deleteProduk();
-                break;
-
-            case "5":
-                showProduk();
-                produkDetailAdmin();
-                break;
-        
-            default:
-                System.out.println("Pilihan tidak ada");
-                break;
+        boolean endwhile = true;
+        while (endwhile) {
+            System.out.println("1. Menampilkan data");
+            System.out.println("2. Menambah data");
+            System.out.println("3. Mengubah data");
+            System.out.println("4. Menghapus data");
+            System.out.println("5. Detail Produk");
+            System.out.println("6. back");
+            System.out.print("Pilih Pilihan anda: ");
+            String pilihan = scanner.nextLine();
+            switch (pilihan) {
+                case "1":
+                    showProduk();
+                    break;
+            
+                case "2":
+                    createProduk();
+                    break;
+            
+                case "3":
+                    showProduk();
+                    updateProduk();
+                    break;
+            
+                case "4":
+                    showProduk();
+                    deleteProduk();
+                    break;
+    
+                case "5":
+                    showProduk();
+                    produkDetailAdmin();
+                    break;
+            
+                case "6":
+                    endwhile = false;
+                    Admin adminView = new Admin();
+                    adminView.menu();
+                    break;
+                default:
+                    System.out.println("Pilihan tidak ada");
+                    break;
+            }
         }
         scanner.close();
     }
@@ -71,7 +80,7 @@ public class ProdukController extends AllSql{
         String idbrand = scanner.nextLine();
         if (!checkBrand(listB, idbrand)) { 
             System.out.print("Tolong Input dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
 
@@ -84,7 +93,7 @@ public class ProdukController extends AllSql{
         // JIKA YANG DIISI KOSONG MAKA GUNAKAN DATA OLD
         String sql = "UPDATE produk SET id_brand = "+(idbrand.isEmpty() ? oldData.getidBrand() : idbrand)+", nama_product = '"+(namaproduk.isEmpty() ? oldData.getNamaProduct() : namaproduk)+"', harga = "+String.valueOf(harga.isEmpty() ? oldData.getHarga() : harga)+" WHERE id_produk ="+idproduk+"";
         this.sqlexupdate(sql);
-        scanner.close(); 
+        // scanner.close(); 
     }
 
     private void deleteProduk()throws Exception{
@@ -95,7 +104,7 @@ public class ProdukController extends AllSql{
         String idproduk = scanner.nextLine();
         if (!checkProduk(list, idproduk)) { 
             System.out.print("Tolong Input dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         System.out.print("apakah anda yakin ? Product Detail dengan Product tersebut akan terhapus [y/n]");
@@ -104,7 +113,7 @@ public class ProdukController extends AllSql{
             String sql = "DELETE FROM produk WHERE id_produk = "+idproduk+";";
             this.sqlexupdate(sql);
         }
-        scanner.close(); 
+        // scanner.close(); 
     }
 
     public void createProduk()throws Exception{
@@ -117,7 +126,7 @@ public class ProdukController extends AllSql{
         String idbrand = scanner.nextLine();
         if (!checkBrand(list, idbrand)) { 
             System.out.print("Tolong Input dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         System.out.print("Nama Produk: ");
@@ -126,19 +135,18 @@ public class ProdukController extends AllSql{
         String harga = scanner.nextLine();
         String sql = "INSERT INTO produk (id_brand, nama_product, harga) VALUES ("+idbrand+",'"+namaproduk+"',"+String.valueOf(harga)+")";
         this.sqlexupdate(sql);
-        scanner.close(); 
+        // scanner.close(); 
     }
     private void showProduk(){
         try {
             ArrayList<Produk> list = this.selectProduk();
             CommandLineTable st = new CommandLineTable();
             st.setShowVerticalLines(true);
-            st.setHeaders("id produk", "Nama Produk", "Nama Brand", "Harga");
+            st.setHeaders("ID Produk", "Nama Produk", "ID Brand", "Nama Brand", "Harga");
             for (int i = 0; i < list.size(); i++) {
-                st.addRow(Integer.toString(list.get(i).getIdProduk()), list.get(i).getNamaProduct(), list.get(i).getBrand().getBrand(), String.valueOf(list.get(i).getHarga()));
+                st.addRow(list.get(i).getIdProduk()+"", list.get(i).getNamaProduct(), list.get(i).getidBrand()+"", list.get(i).getBrand().getBrand(), list.get(i).getHarga()+"");
             }
             st.print();
-
         } catch (Exception e) {
             System.out.print(e);
         }
@@ -150,13 +158,14 @@ public class ProdukController extends AllSql{
         String idproduk = scanner.nextLine();
         if (!checkProduk(list, idproduk)) { 
             System.out.print("Tolong Input dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         System.out.println("1. Menampilkan data");
         System.out.println("2. Menambah data");
         System.out.println("3. Mengubah data");
         System.out.println("4. Menghapus data");
+        System.out.println("5. Back");
         System.out.print("pilih pilihan anda: ");
         String pilihan = scanner.nextLine();
         switch (pilihan) {
@@ -176,10 +185,13 @@ public class ProdukController extends AllSql{
                 showProdukDetail(Integer.parseInt(idproduk));
                 deleteProdukDetail(Integer.parseInt(idproduk));
                 break;
+            case "5":
+                ProductAdmin();
+                break;
             default:
                 break;
         }
-        scanner.close();
+        // scanner.close();
     }
     public void createProdukDetail(int idproduk){
         Scanner scanner = new Scanner(System.in);
@@ -191,7 +203,7 @@ public class ProdukController extends AllSql{
         String stokproduk = scanner.nextLine();
         String sql = "INSERT INTO produk_detail (id_produk, ukuran, warna, stock) VALUES ("+idproduk+", "+ukuranproduk+", '"+warnaproduk+"', "+stokproduk+")";
         this.sqlexupdate(sql);
-        scanner.close();
+        // scanner.close();
     }
     public void updateProdukDetail(int newidproduk) throws Exception{
         Scanner scanner = new Scanner(System.in);
@@ -200,7 +212,7 @@ public class ProdukController extends AllSql{
         String idUpdate = scanner.nextLine();
         if (!checkProdukDetail(list, idUpdate)) {
             System.out.print("Tolong Input dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         ProdukDetail oldData =  getProdukDetailById(list, idUpdate);
@@ -212,7 +224,7 @@ public class ProdukController extends AllSql{
         String newstokproduk = scanner.nextLine();
         String sql = "UPDATE produk_detail SET id_produk = "+newidproduk+", ukuran = "+(newukuranproduk.isEmpty() ? oldData.getUkuran() : newukuranproduk)+", warna = '"+(newwarnaproduk.isEmpty() ? oldData.getWarna() : newwarnaproduk)+"', stock = "+(newstokproduk.isEmpty() ? oldData.getStock() : newstokproduk)+" WHERE id_produk_detail= "+idUpdate+"";
         this.sqlexupdate(sql);
-        scanner.close();
+        // scanner.close();
     }
     public void deleteProdukDetail(int idproduk) throws Exception{
         ArrayList<ProdukDetail> list = this.selectProdukDetailbyIdproduk(idproduk);
@@ -221,18 +233,22 @@ public class ProdukController extends AllSql{
         String idDelete = scanner.nextLine();
         if (!checkProdukDetail(list, idDelete)) {
             System.out.print("Tolong Input dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         String sql = "DELETE FROM produk_detail WHERE id_produk_detail = "+idDelete+"";
         this.sqlexupdate(sql);
-        scanner.close();
+        // scanner.close();
     }
     public void showProdukDetail(int id) throws Exception{
         ArrayList<ProdukDetail> list = this.selectProdukDetailbyIdproduk(id);
+        CommandLineTable cmd = new CommandLineTable();
+        cmd.setShowVerticalLines(true);
+        cmd.setHeaders("ID Produk Detail", "ID Produk", "Nama Produk", "Nama Brand", "Harga", "Ukuran", "Warna", "Stok");
         for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i).getIdProdukDetail() + " "+ list.get(i).getProduk().getBrand().getBrand() +" "+ list.get(i).getProduk().getNamaProduct() +" "+ list.get(i).getUkuran() + " " +list.get(i).getWarna() + " " + list.get(i).getStock());
+            cmd.addRow(list.get(i).getIdProdukDetail()+"", list.get(i).getidProduk()+"", list.get(i).getProduk().getNamaProduct(), list.get(i).getProduk().getBrand().getBrand(), list.get(i).getProduk().getHarga()+"", list.get(i).getUkuran()+"", list.get(i).getWarna(), list.get(i).getStock()+"");
         }
+        cmd.print();
     }
     private boolean checkBrand(ArrayList<Brand> list, String idbrand){
         boolean t = false;

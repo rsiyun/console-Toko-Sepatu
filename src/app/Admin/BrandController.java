@@ -4,35 +4,45 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import entity.Brand;
 import service.AllSql;
+import service.CommandLineTable;
 
 public class BrandController extends AllSql{
     public void brandAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1. Menampilkan data");
-        System.out.println("2. Menambahkan data");
-        System.out.println("3. Mengubah data");
-        System.out.println("4. Menghapus data");
-        System.out.print("pilih pilihan anda: ");
-        String pilihan = scanner.nextLine();
-        switch (pilihan) {
-            case "1":
-                select();
-            break;
-            
-            case "2":
-                create();
+        boolean endwhile = true;
+        while(endwhile) {
+            System.out.println("1. Menampilkan data");
+            System.out.println("2. Menambahkan data");
+            System.out.println("3. Mengubah data");
+            System.out.println("4. Menghapus data");
+            System.out.println("5. back");
+            System.out.print("pilih pilihan anda: ");
+            String pilihan = scanner.nextLine();
+            switch (pilihan) {
+                case "1":
+                    select();
                 break;
-            case "3":
-                select();
-                update();
-                break;
-
-            case "4":
-                select();
-                delete();
-                break;
-            default:
-                break;
+                
+                case "2":
+                    create();
+                    break;
+                case "3":
+                    select();
+                    update();
+                    break;
+    
+                case "4":
+                    select();
+                    delete();
+                    break;
+                case "5":
+                    endwhile = false;
+                    Admin adminView = new Admin();
+                    adminView.menu();
+                    break;
+                default:
+                    break;
+            }
         }
         scanner.close();
     }
@@ -42,7 +52,7 @@ public class BrandController extends AllSql{
         String namabrand = scanner.nextLine();
         String sql = "INSERT INTO brand (brand) VALUES ('"+namabrand+"')";
         this.sqlexupdate(sql);
-        scanner.close();
+        // scanner.close();
     }
     public void update() throws Exception{
         ArrayList<Brand> list = this.selectBrand();
@@ -51,14 +61,14 @@ public class BrandController extends AllSql{
         String idbrand = scanner.nextLine();
         if (!checkBrand(list, idbrand)) {
             System.out.print("Tolong Data dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         System.out.print("masukkan data brand yang baru: ");
         String newbrand = scanner.nextLine();
         String sql = "UPDATE brand SET brand = '"+newbrand+"' WHERE id_brand= "+idbrand+"";
         this.sqlexupdate(sql);
-        scanner.close();
+        // scanner.close();
     }
     public void delete() throws Exception{
         Scanner scanner = new Scanner(System.in);
@@ -70,19 +80,23 @@ public class BrandController extends AllSql{
             String sql = "DELETE FROM brand WHERE id_brand= "+idDelete+"";
             this.sqlexupdate(sql);
         }
-        scanner.close();
+        // scanner.close();
     }
     public void select(){
         try {
             ArrayList<Brand> list = this.selectBrand();
+            CommandLineTable table = new CommandLineTable();
+            table.setShowVerticalLines(true);
+            table.setHeaders("Id Brand", "Nama Brand");
             for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i).getIdBrand() +" "+list.get(i).getBrand());
-        }
+                table.addRow(list.get(i).getIdBrand()+"", list.get(i).getBrand()+"");
+            }
+            table.print();
         } catch (Exception e) {
             System.out.print("Something wrong in this area");
         }
-
     }
+
     private boolean checkBrand(ArrayList<Brand> list, String idbrand){
         boolean t = false;
         for (int i = 0; i < list.size(); i++) {            

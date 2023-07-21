@@ -5,11 +5,13 @@ import java.util.Scanner;
 import app.AuthView;
 import service.BaseAuth;
 import service.CommandLineCleaner;
+import service.CartData;
 
 public class UserView {
     Scanner scanner;
     public void menu() throws Exception{
         BaseAuth baseAuth = BaseAuth.getInstance();
+        CartData cartData = CartData.getInstance();
         CommandLineCleaner clClear = new CommandLineCleaner();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Selamat Datang User: " + baseAuth.getUser().getUsername());
@@ -35,6 +37,9 @@ public class UserView {
                 cartCon.mainCart();
                 break;
             case "4":
+                for (int i = 0; i <cartData.getCarts().size(); i++) {
+                    cartData.getCarts().remove(i);
+                }// remove all cart 
                 baseAuth.setUser(null);
                 AuthView av = new AuthView();
                 av.View();

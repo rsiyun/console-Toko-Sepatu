@@ -12,23 +12,32 @@ import service.Enum;
 public class TransaksiController extends AllSql{
     public void TransaksiAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1. Menampilkan data Transaksi");
-        System.out.println("2. Konfirmasi Transaksi");
-        System.out.print("Pilih Pilihan anda: ");
-        String pilihan = scanner.nextLine();
-        switch (pilihan) {
-            case "1":
-                showTransaksi();
-                TransaksiDetailAdmin();
-                break;
-            case "2":
-            if (showOnlyTransaksiDibayar()) {
-                updateTransaksi();
-            }
-            break;
-            default:
-                System.out.println("Pilihan tidak ada");
-                break;
+        boolean endwhile = true;
+        while(endwhile){
+            System.out.println("1. Menampilkan data Transaksi");
+            System.out.println("2. Konfirmasi Transaksi");
+            System.out.println("3. back");
+            System.out.print("Pilih Pilihan anda: ");
+            String pilihan = scanner.nextLine();
+            switch (pilihan) {
+                case "1":
+                    showTransaksi();
+                    TransaksiDetailAdmin();
+                    break;
+                case "2":
+                if (showOnlyTransaksiDibayar()) {
+                    updateTransaksi();
+                }
+                    break;
+                case "3":
+                    endwhile = false;
+                    Admin adminView = new Admin();
+                    adminView.menu();
+                    break;
+                default:
+                    System.out.println("Pilihan tidak ada");
+                    break;
+        }
         }
         scanner.close();
     }
@@ -39,10 +48,10 @@ public class TransaksiController extends AllSql{
         String idTransaksi = scanner.nextLine();
         if(!checkTransaksi(listTransaksi, idTransaksi)){
             System.out.println("Tolong Input id dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
-        scanner.close();
+        // scanner.close();
         Transaksi oldData = getTransaksibyid(listTransaksi, idTransaksi);
         showTransaksiTerpilih(oldData);
     }
@@ -53,7 +62,7 @@ public class TransaksiController extends AllSql{
         String idTransaksi = scanner.nextLine();
         if(!checkTransaksi(listTransaksi, idTransaksi)){
             System.out.println("Tolong Input id dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         Transaksi oldData = getTransaksibyid(listTransaksi, idTransaksi);
@@ -65,7 +74,7 @@ public class TransaksiController extends AllSql{
             this.sqlexupdate(sql);
             System.out.println("Transaksi telah dikonfirmasi");
         }
-        scanner.close();
+        // scanner.close();
     }
     private void showTransaksi() throws Exception {
         try {

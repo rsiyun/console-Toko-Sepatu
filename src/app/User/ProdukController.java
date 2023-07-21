@@ -164,11 +164,13 @@ public class ProdukController extends AllSql{
         for (int i = 0; i < cartData.getCarts().size(); i++) {
             if(cartData.getCarts().get(i).getIdProdukDetail() == Integer.parseInt(idProdukDetail)){
                 cartData.getCarts().get(i).setQuantity(cartData.getCarts().get(i).getQuantity()+quantityR);
+                System.out.println("\n Berhasil menambahkan jumlah ke keranjang \n");
                 return;
             }   
         }
         Cart cart = new Cart(Integer.parseInt(idProdukDetail), quantityR, pd);
         cartData.addCart(cart);
+        System.out.println("\n Berhasil ditambahkan ke keranjang \n");
     }
 
     private int quantityForm(Scanner scanner, ProdukDetail pd){

@@ -10,11 +10,14 @@ import service.Enum;
 public class UserController extends AllSql{
     public void UserAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1. Menampilkan User");
-        System.out.println("2. Mengubah User");
-        System.out.print("Pilih Pilihan anda: ");
-        int pilihan = scanner.nextInt();
-        switch (pilihan) {
+        boolean endwhile = true;
+        while(endwhile){
+            System.out.println("1. Menampilkan User");
+            System.out.println("2. Mengubah User");
+            System.out.println("3. back");
+            System.out.print("Pilih Pilihan anda: ");
+            int pilihan = scanner.nextInt();
+            switch (pilihan) {
             case 1:
                 this.ShowUser();
                 break;
@@ -22,9 +25,15 @@ public class UserController extends AllSql{
                 this.ShowUser();
                 this.UpdateUser();
                 break;
+            case 3:
+                endwhile = false;
+                Admin adminView = new Admin();
+                adminView.menu();
+                break;
             default:
                 System.out.println("Pilihan tidak ada");
                 break;
+        }
         }
         scanner.close();
     }
@@ -37,7 +46,7 @@ public class UserController extends AllSql{
         int idUser = scanner.nextInt();
         if(!checkUser(listUser, idUser)){
             System.out.println("Tolong Input id dengan benar");
-            scanner.close();
+            // scanner.close();
             return;
         }
         if (baseAuth.getUser().getRole() == 2) {
@@ -61,7 +70,7 @@ public class UserController extends AllSql{
             this.UpdateStatusUser(listUser, idUser);
         }
 
-        scanner.close();
+        // scanner.close();
     }
     private void ShowUser() throws Exception{
         try{
@@ -112,10 +121,10 @@ public class UserController extends AllSql{
         Scanner scanner = new Scanner(System.in);
         String pilihan = scanner.next();
         if(pilihan.equals("y") || pilihan.equals("Y")){
-            scanner.close();
+            // scanner.close();
             return newEnum;
         }
-        scanner.close();
+        // scanner.close();
         return oldEnum;
     }
     private String getRole(User user){
@@ -134,7 +143,7 @@ public class UserController extends AllSql{
             System.out.println("2. ADMIN");
             System.out.println("Pilih Pilihan anda: ");
             int pilihan = scanner.nextInt();
-            scanner.close();
+            // scanner.close();
             if (pilihan == 1)
                 return Enum.RoleUsers.superAdmin.value;
             else if (pilihan == 2)
@@ -145,7 +154,7 @@ public class UserController extends AllSql{
             System.out.println("2. USER");
             System.out.println("Pilih Pilihan anda: ");
             int pilihan = scanner.nextInt();
-            scanner.close();
+            // scanner.close();
             if (pilihan == 1)
                 return Enum.RoleUsers.superAdmin.value;
             else if (pilihan == 2)
@@ -156,13 +165,13 @@ public class UserController extends AllSql{
             System.out.println("2. USER");
             System.out.println("Pilih Pilihan anda: ");
             int pilihan = scanner.nextInt();
-            scanner.close();
+            // scanner.close();
             if (pilihan == 1)
                 return Enum.RoleUsers.Admin.value;
             else if (pilihan == 2)
                 return Enum.RoleUsers.Users.value;
         }
-        scanner.close();
+        // scanner.close();
         return role;
     }
 

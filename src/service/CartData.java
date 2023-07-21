@@ -20,7 +20,7 @@ public class CartData {
     public ArrayList<Cart> getCarts() {
         return carts;
     }
-
+    
     public void truncateCarts(){
         this.carts.clear();
     }
