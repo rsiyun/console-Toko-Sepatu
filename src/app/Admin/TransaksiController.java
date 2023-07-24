@@ -158,7 +158,7 @@ public class TransaksiController extends AllSql{
     }
     private boolean checkTransaksi(ArrayList<Transaksi> list, String idTransaksi) throws Exception{
         for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getIdTransaksi() == Integer.parseInt(idTransaksi)){
+            if(idTransaksi.equals(Integer.toString(list.get(i).getIdTransaksi()))){
                 return true;
             }
         }
@@ -166,7 +166,7 @@ public class TransaksiController extends AllSql{
     }
     private Transaksi getTransaksibyid(ArrayList<Transaksi> list, String idTransaksi) throws Exception{
         for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getIdTransaksi() == Integer.parseInt(idTransaksi)){
+            if(idTransaksi.equals(Integer.toString(list.get(i).getIdTransaksi()))){
                 Transaksi oldData = new Transaksi(list.get(i).getIdTransaksi(), list.get(i).getIdUser(), list.get(i).getTotalHarga(), list.get(i).getTglTransaksi(), list.get(i).getStatus(), list.get(i).getUser());
                 return oldData;
             }

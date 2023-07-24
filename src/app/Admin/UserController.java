@@ -47,6 +47,11 @@ public class UserController extends AllSql{
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan id user yang ingin diubah : ");
         String idUser = scanner.nextLine();
+        try{
+            Integer.parseInt(idUser);
+        }catch(Exception e){
+            return;
+        }
         if(!checkUser(listUser, idUser)){
             System.out.println("Tolong Input id dengan benar");
             // scanner.close();
@@ -189,13 +194,8 @@ public class UserController extends AllSql{
     }
 
     private boolean checkUser(ArrayList<User> list, String id) throws Exception{
-        try{
-            Integer.parseInt(id);
-        }catch(Exception e){
-            return false;
-        }
         for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getIdUser() == Integer.parseInt(id)){
+            if(id.equals(Integer.toString(list.get(i).getIdUser()))){
                 return true;
             }
         }

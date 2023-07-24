@@ -173,6 +173,11 @@ public class ProdukController extends AllSql{
         Scanner scanner = new Scanner(System.in);
         System.out.print("Pilih produk yang ingin dilihat detailnya: ");
         String idproduk = scanner.nextLine();
+        try{
+            Integer.parseInt(idproduk);
+        }catch(Exception e){
+            return;
+        }
         if (!checkProduk(list, idproduk)) { 
             System.out.println("Tolong Input dengan benar");
             // scanner.close();
@@ -310,7 +315,7 @@ public class ProdukController extends AllSql{
     }
     private ProdukDetail getProdukDetailById(ArrayList<ProdukDetail> list, String idprodukdetail){
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getIdProdukDetail() == Integer.parseInt(idprodukdetail)) {
+            if (idprodukdetail.equals(Integer.toString(list.get(i).getIdProdukDetail()))) {
                 ProdukDetail oldData = new ProdukDetail(list.get(i).getIdProdukDetail(), list.get(i).getidProduk(), list.get(i).getUkuran(), list.get(i).getWarna(), list.get(i).getStock(), list.get(i).getProduk());
                 return oldData;
             }

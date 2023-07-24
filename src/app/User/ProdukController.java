@@ -66,6 +66,11 @@ public class ProdukController extends AllSql{
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan id produk yang ingin di lihat detailnya : ");
         String idProduk = scanner.nextLine();
+        try{
+            Integer.parseInt(idProduk);
+        }catch(Exception e){
+            return;
+        }
         if(!checkProduk(listProduk, idProduk)){
             System.out.println("Tolong Input id dengan benar");
             return;
@@ -164,6 +169,11 @@ public class ProdukController extends AllSql{
         System.out.print("Masukkan id produk detail yang ingin dibeli : ");
         String idProdukDetail = scanner.nextLine();
         ProdukDetail pd = checkProdukDetail(list, idProdukDetail);
+        try{
+            Integer.parseInt(idProdukDetail);
+        }catch(Exception e){
+            return;
+        }
         if (pd == null) {
             System.out.println("\n Tolong masukkan id produk detail dengan benar \n");
             return;

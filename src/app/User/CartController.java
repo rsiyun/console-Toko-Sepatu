@@ -168,6 +168,12 @@ public class CartController  extends AllSql {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan nomer produk yang ingin dihapus : ");
         String noProduk = scanner.nextLine();
+        try {
+            Integer.parseInt(noProduk);
+        } catch (Exception e) {
+            System.out.println("masukkan nomer produk dengan benar");
+            return;
+        }
         if (cartData.getCarts().size() < Integer.parseInt(noProduk) || 1 > Integer.parseInt(noProduk)) {
             System.out.println("Masukkan nomer Produk dengan benar");
             return;
@@ -196,7 +202,7 @@ public class CartController  extends AllSql {
         String etquantity = scanner.nextLine();
         int quantity = 0;
         try {
-           quantity = Integer.parseInt(etquantity);
+            quantity = Integer.parseInt(etquantity);
         } catch (Exception e) {
             System.out.println("Masukkan Quantitiy dengan benar");
             return -1;
