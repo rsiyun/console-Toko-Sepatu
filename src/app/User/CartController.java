@@ -7,6 +7,7 @@ import entity.ProdukDetail;
 import service.AllSql;
 import service.BaseAuth;
 import service.CartData;
+import service.CommandLineCleaner;
 import service.CommandLineTable;
 import service.Enum.StatusTransaksi;
 
@@ -14,6 +15,7 @@ public class CartController  extends AllSql {
 
     public void mainCart()  throws Exception{
         CartData cartData = CartData.getInstance();
+        CommandLineCleaner cleaner = new CommandLineCleaner();
         boolean endwhile = true;
         if (cartData.getCarts().isEmpty()) {
             System.out.println("\n Cart Masih Kosong \n");
@@ -32,6 +34,7 @@ public class CartController  extends AllSql {
             System.out.println("5. back");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
+            cleaner.clear();
             switch (pilihan) {
                 case "1":
                     showCart();
@@ -138,6 +141,12 @@ public class CartController  extends AllSql {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan nomer produk yang ingin diubah : ");
         String noProduk = scanner.nextLine();
+        try {
+            Integer.parseInt(noProduk);
+        } catch (Exception e) {
+            System.out.println("masukkan nomer produk dengan benar");
+            return;
+        }
         if (cartData.getCarts().size() < Integer.parseInt(noProduk) || 1 > Integer.parseInt(noProduk)) {
             System.out.println("Masukkan nomer Produk dengan benar");
             return;
@@ -184,14 +193,21 @@ public class CartController  extends AllSql {
     }
     private int quantityForm(Scanner scanner, ProdukDetail pd){
         System.out.print("Masukkan Jumlah barang : ");
-        String quantity = scanner.nextLine();
-        if (pd.getStock() < Integer.parseInt(quantity)) {
+        String etquantity = scanner.nextLine();
+        int quantity = 0;
+        try {
+           quantity = Integer.parseInt(etquantity);
+        } catch (Exception e) {
+            System.out.println("Masukkan Quantitiy dengan benar");
+            return -1;
+        }
+        if (pd.getStock() < quantity) {
             System.out.println("\n Stock Tidak Mencukupi\n");
             return -1;
-        }else if(Integer.parseInt(quantity) <= 0){
+        }else if(quantity <= 0){
             System.out.println("\n Jumlah harus melebihi 1 \n");
             return -1;
         }
-        return Integer.parseInt(quantity);
+        return quantity;
     }
 }

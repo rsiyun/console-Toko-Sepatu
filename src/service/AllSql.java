@@ -126,6 +126,28 @@ public class AllSql extends ExecuteSql{
         }
         return list;
     }
+    public User getDataUser(String password, String username) throws Exception{
+        String sql = "SELECT users.id_user, users.username, users.role, users.active FROM users WHERE users.password = '"+password+"' AND users.username = '"+username+"'" ;
+        ResultSet rs = this.sqlquerry(sql);
+        User user = null;
+        while(rs.next()){
+           user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getInt("role"), rs.getInt("active"));
+        }
+        return user;
+    }
+    public User getDataUser(String username) throws Exception{
+        String sql = "SELECT users.id_user, users.username, users.role, users.active FROM users WHERE users.username = '"+username+"'" ;
+        ResultSet rs = this.sqlquerry(sql);
+        User user = null;
+        while(rs.next()){
+           user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getInt("role"), rs.getInt("active"));
+        }
+        return user;
+    }
+    public void insertUser(String username, String password) throws Exception{
+        String sql = "INSERT INTO users (username, password, role, active) VALUES ('"+username+"','"+password+"', 0, 1);";
+        this.sqlexupdate(sql);
+    }
 
     public void insertTransaksi(int idUser, float totalHargaOrder, int orderstts, CartData cartData){
         ResultSet rs = null;

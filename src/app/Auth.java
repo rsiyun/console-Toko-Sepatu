@@ -7,34 +7,6 @@ import entity.User;
 import service.AllSql;
 
 public class Auth extends AllSql{
-
-    public User getDataUser(String password, String username) throws Exception{
-        
-        String sql = "SELECT users.id_user, users.username, users.role, users.active FROM users WHERE users.password = '"+password+"' AND users.username = '"+username+"'" ;
-        ResultSet rs = this.sqlquerry(sql);
-        User user = null;
-        while(rs.next()){
-           user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getInt("role"), rs.getInt("active"));
-        }
-        
-        return user;
-        
-    }
-    public User getDataUser(String username) throws Exception{
-        
-        String sql = "SELECT users.id_user, users.username, users.role, users.active FROM users WHERE users.username = '"+username+"'" ;
-        ResultSet rs = this.sqlquerry(sql);
-        User user = null;
-        while(rs.next()){
-           user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getInt("role"), rs.getInt("active"));
-        }
-        return user;
-        
-    }
-    public void insertUser(String username, String password) throws Exception{
-        String sql = "INSERT INTO users (username, password, role, active) VALUES ('"+username+"','"+password+"', 0, 1);";
-        this.sqlexupdate(sql);
-    }
     public User processLogin() throws Exception {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Username: ");
