@@ -66,8 +66,8 @@ public class ProdukController extends AllSql{
         // CHECK ADA TIDAK ID yang diinputkan user
         String idproduk = scanner.nextLine();
         if (!checkProduk(list, idproduk)) { 
-            System.out.print("Tolong Input dengan benar");
-            scanner.close();
+            System.out.println("Tolong Input dengan benar");
+            // scanner.close();
             return;
         }
         // PEMILIHAN TABLE BRAND
@@ -79,7 +79,7 @@ public class ProdukController extends AllSql{
         System.out.print("Pilih id idBrand: ");
         String idbrand = scanner.nextLine();
         if (!checkBrand(listB, idbrand)) { 
-            System.out.print("Tolong Input dengan benar");
+            System.out.println("Tolong Input dengan benar");
             // scanner.close();
             return;
         }
@@ -103,7 +103,7 @@ public class ProdukController extends AllSql{
         // CHECK ADA TIDAK ID yang diinputkan user
         String idproduk = scanner.nextLine();
         if (!checkProduk(list, idproduk)) { 
-            System.out.print("Tolong Input dengan benar");
+            System.out.println("Tolong Input dengan benar");
             // scanner.close();
             return;
         }
@@ -133,7 +133,7 @@ public class ProdukController extends AllSql{
         System.out.print("Pilih id brand: ");
         String idbrand = scanner.nextLine();
         if (!checkBrand(list, idbrand)) { 
-            System.out.print("Tolong Input dengan benar");
+            System.out.println("Tolong Input dengan benar");
             // scanner.close();
             return;
         }
@@ -171,7 +171,7 @@ public class ProdukController extends AllSql{
         System.out.print("Pilih produk yang ingin dilihat detailnya: ");
         String idproduk = scanner.nextLine();
         if (!checkProduk(list, idproduk)) { 
-            System.out.print("Tolong Input dengan benar");
+            System.out.println("Tolong Input dengan benar");
             // scanner.close();
             return;
         }
@@ -225,7 +225,7 @@ public class ProdukController extends AllSql{
         System.out.print("data mana yang mau di update: ");
         String idUpdate = scanner.nextLine();
         if (!checkProdukDetail(list, idUpdate)) {
-            System.out.print("Tolong Input dengan benar");
+            System.out.println("Tolong Input dengan benar");
             // scanner.close();
             return;
         }
@@ -246,7 +246,7 @@ public class ProdukController extends AllSql{
         System.out.print(" data mana yang mau di delete ? ");
         String idDelete = scanner.nextLine();
         if (!checkProdukDetail(list, idDelete)) {
-            System.out.print("Tolong Input dengan benar");
+            System.out.println("Tolong Input dengan benar");
             // scanner.close();
             return;
         }

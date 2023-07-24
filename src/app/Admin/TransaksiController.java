@@ -7,8 +7,6 @@ import service.AllSql;
 import service.CommandLineTable;
 import service.Enum;
 
-
-
 public class TransaksiController extends AllSql{
     public void TransaksiAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);

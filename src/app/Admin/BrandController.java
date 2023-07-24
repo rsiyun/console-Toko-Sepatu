@@ -60,7 +60,7 @@ public class BrandController extends AllSql{
         System.out.print("data mana yang mau di update: ");
         String idbrand = scanner.nextLine();
         if (!checkBrand(list, idbrand)) {
-            System.out.print("Tolong Data dengan benar");
+            System.out.println("Tolong Input dengan benar");
             // scanner.close();
             return;
         }
@@ -71,9 +71,15 @@ public class BrandController extends AllSql{
         // scanner.close();
     }
     public void delete() throws Exception{
+        ArrayList<Brand> list = this.selectBrand();
         Scanner scanner = new Scanner(System.in);
         System.out.print(" data mana yang mau di delete ? ");
         String idDelete = scanner.nextLine();
+        if (!checkBrand(list, idDelete)) {
+            System.out.println("Tolong Input dengan benar");
+            // scanner.close();
+            return;
+        }
         System.out.print("apakah anda yakin ? Product dengan category tersebut akan terhapus [y/n]");
         String pil = scanner.nextLine();
         if (pil.equals("y") || pil.equals("Y")) {

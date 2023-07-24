@@ -16,16 +16,16 @@ public class UserController extends AllSql{
             System.out.println("2. Mengubah User");
             System.out.println("3. back");
             System.out.print("Pilih Pilihan anda: ");
-            int pilihan = scanner.nextInt();
+            String pilihan = scanner.nextLine();
             switch (pilihan) {
-            case 1:
+            case "1":
                 this.ShowUser();
                 break;
-            case 2:
+            case "2":
                 this.ShowUser();
                 this.UpdateUser();
                 break;
-            case 3:
+            case "3":
                 endwhile = false;
                 Admin adminView = new Admin();
                 adminView.menu();
@@ -43,43 +43,47 @@ public class UserController extends AllSql{
         ArrayList<User> listUser = this.selectUser();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan id user yang ingin diubah : ");
-        int idUser = scanner.nextInt();
-        if(!checkUser(listUser, idUser)){
+        String idUser = scanner.nextLine();
+        if(!checkUser(listUser, Integer.parseInt(idUser))){
             System.out.println("Tolong Input id dengan benar");
             // scanner.close();
             return;
         }
-        if (baseAuth.getUser().getRole() == 2) {
+        if (baseAuth.getUser().getRole() == 2) { //jika super admin maka bisa ubah role dan status
             System.out.println("Apa yang mau diubah?");
             System.out.println("1. Mengubah Role User");    
             System.out.println("2. Mengubah Status User");
             System.out.print("Pilih Pilihan anda: ");
-            int pilihan = scanner.nextInt();
+            String pilihan = scanner.nextLine();
             switch (pilihan) {
-                case 1:
-                    this.UpdateRoleUser(listUser, idUser);
+                case "1":
+                    this.UpdateRoleUser(listUser,  Integer.parseInt(idUser));
                     break;
-                case 2:
-                    this.UpdateStatusUser(listUser, idUser);
+                case "2":
+                    this.UpdateStatusUser(listUser,  Integer.parseInt(idUser));
                     break;
                 default:
                     System.out.println("Pilihan tidak ada");
                     break;
             }
-        }else if(baseAuth.getUser().getActive() == 1){
-            this.UpdateStatusUser(listUser, idUser);
+        }else if(baseAuth.getUser().getRole() == 1){ //jika admin maka hanya bisa ban user
+            this.UpdateStatusUser(listUser,  Integer.parseInt(idUser));
         }
-
         // scanner.close();
     }
     private void ShowUser() throws Exception{
         try{
+            BaseAuth baseAuth = BaseAuth.getInstance();
             ArrayList<User> listUser = this.selectUser();
             CommandLineTable cmd = new CommandLineTable();
             cmd.setShowVerticalLines(true);
             cmd.setHeaders("ID User", "Username", "Role", "Status");
             for(User user : listUser){
-                cmd.addRow(String.valueOf(user.getIdUser()), user.getUsername(), getRole(user), getStatus(user));
+                if(user.getRole() == 0 && baseAuth.getUser().getRole() == 1){ // jika user admin maka bisa melihat user biasa saja
+                    cmd.addRow(String.valueOf(user.getIdUser()), user.getUsername(), getRole(user), getStatus(user)); 
+                } else if ((user.getRole() == 0 || user.getRole() == 1 )&& baseAuth.getUser().getRole() == 2){ //jika user super admin maka bisa melihat user biasa dan admin
+                    cmd.addRow(String.valueOf(user.getIdUser()), user.getUsername(), getRole(user), getStatus(user));
+                }
             }
             cmd.print();
         }catch(Exception e){
@@ -138,46 +142,52 @@ public class UserController extends AllSql{
     private int setRole(int role){
         Scanner scanner = new Scanner(System.in);
         if(role == Enum.RoleUsers.Users.value){
-            System.out.println("User adalah USER, ingin dijadikan ADMIN? (y/n)");
+            System.out.println("User adalah USER, ingin dirubah menjadi?");
             System.out.println("1. SUPER ADMIN");
             System.out.println("2. ADMIN");
             System.out.println("Pilih Pilihan anda: ");
-            int pilihan = scanner.nextInt();
+            String pilihan = scanner.nextLine();
             // scanner.close();
-            if (pilihan == 1)
+            if (pilihan == "1")
                 return Enum.RoleUsers.superAdmin.value;
-            else if (pilihan == 2)
-                return Enum.RoleUsers.Admin.value;        
+            else if (pilihan == "2")
+                return Enum.RoleUsers.Admin.value;  
+            else
+                return role;      
         }else if(role == Enum.RoleUsers.Admin.value){
             System.out.println("User adalah ADMIN, ingin dirubah menjadi?");
             System.out.println("1. SUPER ADMIN");
             System.out.println("2. USER");
             System.out.println("Pilih Pilihan anda: ");
-            int pilihan = scanner.nextInt();
+            String pilihan = scanner.nextLine();
             // scanner.close();
-            if (pilihan == 1)
+            if (pilihan == "1")
                 return Enum.RoleUsers.superAdmin.value;
-            else if (pilihan == 2)
+            else if (pilihan == "2")
                 return Enum.RoleUsers.Users.value;
+            else
+                return role;
         }else if (role == Enum.RoleUsers.superAdmin.value){
-            System.out.println("User adalah SUPER ADMIN, ingin dijadikan ADMIN? (y/n)");
+            System.out.println("User adalah SUPER ADMIN, ingin dirubah menjadi?");
             System.out.println("1. ADMIN");
             System.out.println("2. USER");
             System.out.println("Pilih Pilihan anda: ");
-            int pilihan = scanner.nextInt();
+            String pilihan = scanner.nextLine();
             // scanner.close();
-            if (pilihan == 1)
+            if (pilihan == "1")
                 return Enum.RoleUsers.Admin.value;
-            else if (pilihan == 2)
+            else if (pilihan == "2")
                 return Enum.RoleUsers.Users.value;
+            else
+                return role; 
         }
         // scanner.close();
         return role;
     }
 
     private boolean checkUser(ArrayList<User> list, int id) throws Exception{
-        for(User user : list){
-            if(user.getIdUser() == id){
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getIdUser() == id){
                 return true;
             }
         }
