@@ -78,7 +78,7 @@ public class AllSql extends ExecuteSql{
         ResultSet rs = this.sqlquerry(sql);
         ArrayList<TransaksiDetail> list = new ArrayList<TransaksiDetail>();
         while (rs.next()){
-            User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));//user
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), 0, rs.getInt("active"));//user
             Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
             Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), 0, brand); //produk
             ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), produk);//produk detail
@@ -93,7 +93,7 @@ public class AllSql extends ExecuteSql{
         ResultSet rs = this.sqlquerry(sql);
         ArrayList<TransaksiDetail> list = new ArrayList<TransaksiDetail>();
         while (rs.next()){
-            User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));//user
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), 0, rs.getInt("active"));//user
             Brand brand = new Brand(rs.getInt("id_brand"), rs.getString("brand"));
             Produk produk = new Produk(rs.getInt("id_produk"), rs.getInt("id_brand"), rs.getString("nama_product"), 0, brand); //produk
             ProdukDetail produkDetail = new ProdukDetail(rs.getInt("id_produk_detail"), rs.getInt("id_produk"), rs.getInt("ukuran"), rs.getString("warna"), rs.getInt("stock"), produk);//produk detail
@@ -108,7 +108,7 @@ public class AllSql extends ExecuteSql{
         ResultSet rs = this.sqlquerry(sql);
         ArrayList<Transaksi> list = new ArrayList<Transaksi>();
         while (rs.next()) {
-            User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), 0, rs.getInt("active"));
             Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
             list.add(transaksi);
         }
@@ -120,7 +120,7 @@ public class AllSql extends ExecuteSql{
         ResultSet rs = this.sqlquerry(sql);
         ArrayList<Transaksi> list = new ArrayList<Transaksi>();
         while (rs.next()) {
-            User user = new User(rs.getInt("id_user"), rs.getString("username"), "", 0, rs.getInt("active"));
+            User user = new User(rs.getInt("id_user"), rs.getString("username"), 0, rs.getInt("active"));
             Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
             list.add(transaksi);
         }

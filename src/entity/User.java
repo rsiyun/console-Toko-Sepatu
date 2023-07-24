@@ -3,16 +3,8 @@ package entity;
 public class User {
     private int idUser;
     private String username;
-    private String password;
     private int role;
     private int active;
-    public User(int idUser, String username, String password, int role, int active) {
-        this.idUser = idUser;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.active = active;
-    }
     public User(int idUser, String username, int role, int active) {
         this.idUser = idUser;
         this.username = username;
@@ -24,12 +16,6 @@ public class User {
     }
     public void setUsername(String username) {
         this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
     public int getRole() {
         return role;

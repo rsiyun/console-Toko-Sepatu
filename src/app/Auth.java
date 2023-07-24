@@ -7,23 +7,28 @@ import entity.User;
 import service.AllSql;
 
 public class Auth extends AllSql{
-    private ArrayList<User> userList = new ArrayList<User>();
 
-    public ArrayList<User> getUserList() {
-        return userList;
-    }
-    public void setUserList(ArrayList<User> userList) {
-        this.userList = userList;
-    }
-    public void getDataUser() throws Exception{
-        String sql = "SELECT * FROM users";
+    public User getDataUser(String password, String username) throws Exception{
+        
+        String sql = "SELECT users.id_user, users.username, users.role, users.active FROM users WHERE users.password = '"+password+"' AND users.username = '"+username+"'" ;
         ResultSet rs = this.sqlquerry(sql);
-        ArrayList<User> list = new ArrayList<User>();
+        User user = null;
         while(rs.next()){
-            User user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getString("password"), rs.getInt("role"), rs.getInt("active"));
-            list.add(user);
+           user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getInt("role"), rs.getInt("active"));
         }
-        setUserList(list);
+        
+        return user;
+        
+    }
+    public User getDataUser(String username) throws Exception{
+        
+        String sql = "SELECT users.id_user, users.username, users.role, users.active FROM users WHERE users.username = '"+username+"'" ;
+        ResultSet rs = this.sqlquerry(sql);
+        User user = null;
+        while(rs.next()){
+           user = new User(rs.getInt("id_user"), rs.getString("username"), rs.getInt("role"), rs.getInt("active"));
+        }
+        return user;
         
     }
     public void insertUser(String username, String password) throws Exception{
@@ -31,46 +36,30 @@ public class Auth extends AllSql{
         this.sqlexupdate(sql);
     }
     public User processLogin() throws Exception {
-        getDataUser();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Username: ");
         String username = scanner.nextLine();
 
         System.out.print("Password: ");
         String password = scanner.nextLine();
-        // scanner.close();
-        if (checkLogin(username, password, getUserList()) == null) {
+
+        if (getDataUser(password, username) == null) {
             System.out.println("Username dan Password Salah");
-        }else if (checkLogin(username, password, getUserList()).getActive() == 0) {
-            System.out.println("\n Anda telah di ban");
-            return null;
         }
-        return checkLogin(username, password, getUserList());
+        return getDataUser(password, username);
     }
-   public User checkLogin(String username, String password, ArrayList<User> userList){
-        for (int i = 0; i < userList.size(); i++) {
-            if (username.equals(userList.get(i).getUsername()) && password.equals(userList.get(i).getPassword())) {
-                return userList.get(i);
-            }
-        }
-        return null;
-   }
 
    public void processRegister() throws Exception {
-        getDataUser();
         System.out.println("Register Page");
         Scanner scanner = new Scanner(System.in);
             System.out.print("Username: ");
             String username = scanner.nextLine();
-            for (int i = 0; i < getUserList().size(); i++) {
-                if (username.equals(userList.get(i).getUsername())) {
-                    System.out.println("Username sudah ada");
-                    return;
-                }
+            if (getDataUser(username) != null) {
+                System.out.println("Username sudah terisi");
+                return;
             }
             System.out.print("Password: ");
             String password = scanner.nextLine();
-            // scanner.close();
             insertUser(username, password);
    }
 }

@@ -38,7 +38,6 @@ public class AuthView {
                 }
             }
             System.out.println("Login berhasil!");
-            user.setPassword("");
             baseAuth.setUser(user);
             if (user.getRole() == RoleUsers.Admin.value || user.getRole() == RoleUsers.superAdmin.value) {
                 Admin admin = new Admin();
