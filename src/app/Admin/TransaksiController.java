@@ -5,10 +5,12 @@ import entity.Transaksi;
 import entity.TransaksiDetail;
 import service.AllSql;
 import service.CommandLineTable;
+import service.CommandLineCleaner;
 import service.Enum;
 
 public class TransaksiController extends AllSql{
     public void TransaksiAdmin() throws Exception {
+        CommandLineCleaner clClear = new CommandLineCleaner();
         Scanner scanner = new Scanner(System.in);
         boolean endwhile = true;
         while(endwhile){
@@ -17,6 +19,7 @@ public class TransaksiController extends AllSql{
             System.out.println("3. back");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
+            clClear.clear();
             switch (pilihan) {
                 case "1":
                     showTransaksi();

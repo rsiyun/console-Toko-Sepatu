@@ -7,9 +7,11 @@ import entity.Cart;
 import service.AllSql;
 import service.CartData;
 import service.CommandLineTable;
+import service.CommandLineCleaner;
 
 public class ProdukController extends AllSql{
     ArrayList<ProdukDetail> list = new ArrayList<ProdukDetail>();
+    CommandLineCleaner clClear = new CommandLineCleaner();
     public void ProdukUser()throws Exception{
         boolean endwhile = true;
         while(endwhile){
@@ -19,6 +21,7 @@ public class ProdukController extends AllSql{
         System.out.println("3. back");
         System.out.print("Pilih Pilihan anda: ");
         String pilihan = scanner.nextLine();
+        clClear.clear();
         switch (pilihan) {
             case "1":
                 if(showProduk())
@@ -40,7 +43,6 @@ public class ProdukController extends AllSql{
     }
     public boolean showProduk() throws Exception{
         try{
-
             ArrayList<Produk> listProduk = this.selectProduk();
             if (listProduk.size() == 0) {
                 System.out.println("Belum ada Produk");
@@ -86,10 +88,16 @@ public class ProdukController extends AllSql{
         return false;
     }
 
-    private ProdukDetail checkProdukDetail(ArrayList<ProdukDetail> list, int idProdukDetail){
+    private ProdukDetail checkProdukDetail(ArrayList<ProdukDetail> list, String idProdukDetail){
         ProdukDetail result = null;
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getIdProdukDetail() == idProdukDetail) {
+        try{
+            Integer.parseInt(idProdukDetail);
+        }
+        catch(Exception e){
+            return result;
+        }
+        for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getIdProdukDetail() == Integer.parseInt(idProdukDetail)) {
                     result = list.get(i);
                 return result;
             }
@@ -155,7 +163,7 @@ public class ProdukController extends AllSql{
         
         System.out.print("Masukkan id produk detail yang ingin dibeli : ");
         String idProdukDetail = scanner.nextLine();
-        ProdukDetail pd = checkProdukDetail(list, Integer.parseInt(idProdukDetail));
+        ProdukDetail pd = checkProdukDetail(list, idProdukDetail);
         if (pd == null) {
             System.out.println("\n Tolong masukkan id produk detail dengan benar \n");
             return;
@@ -183,6 +191,11 @@ public class ProdukController extends AllSql{
     private int quantityForm(Scanner scanner, ProdukDetail pd){
         System.out.print("Masukkan Jumlah barang : ");
         String quantity = scanner.nextLine();
+        try{
+            Integer.parseInt(quantity);
+        }catch(Exception e){
+            return -1;
+        }
         if (pd.getStock() < Integer.parseInt(quantity)) {
             System.out.println("\n Stock Tidak Mencukupi\n");
             return -1;

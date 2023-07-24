@@ -19,9 +19,8 @@ public class TransaksiController extends AllSql{
         while(endwhile){
             Scanner scanner = new Scanner(System.in);
             ArrayList<Transaksi> list = this.selectTransaksiByIdUser(baseAuth.getUser().getIdUser());
-            System.out.println("1. Pembayaran Transaksi");
-            System.out.println("2. Histori Transaksi");
-            System.out.println("3. back");
+            System.out.println("1. Histori Transaksi");
+            System.out.println("2. back");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
             clClear.clear();
@@ -31,9 +30,6 @@ public class TransaksiController extends AllSql{
                         changeStatus(baseAuth.getUser().getIdUser());
                     break;
                 case "2":
-                    showTransaction(list);
-                    break;
-                case "3":
                     endwhile = false;
                     UserView userView = new UserView();
                     userView.menu();
@@ -61,11 +57,14 @@ public class TransaksiController extends AllSql{
     }
     private void changeStatus(int idUser)throws Exception{
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Masukkan id Transaksi Untuk memilih Transaksi yang ingin dibayar : ");
+        System.out.print("Masukkan id Transaksi Untuk dilihat detailnya : ");
         String idTransaksi = scanner.nextLine();
         try {
             Integer.parseInt(idTransaksi);
-        } catch (Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+            System.out.println("Masukkan id Transaksi dengan benar");
+        return;
+        }
         // Menampilkan order detail
         ArrayList<TransaksiDetail> listDetail = this.selectTransaksiDetailbyIdtransaksi(Integer.parseInt(idTransaksi), idUser);
         if (listDetail.isEmpty()) {
@@ -86,6 +85,7 @@ public class TransaksiController extends AllSql{
         if (!checkStock(listDetail)) {
             return;
         }
+        System.out.println("\n Total Transaksi: "+listDetail.get(0).getTransaksi().getTotalHarga()+""+"\n");
         System.out.print("Apakah Anda yakin membeli Barang Tersebut ? [y/n]: ");
         String pilihan = scanner.nextLine();
         if (pilihan.equals("y") || pilihan.equals("Y")) {
@@ -94,7 +94,6 @@ public class TransaksiController extends AllSql{
             stockBerkurang(listDetail);
             System.out.println("\n Barang Berhasil sudah Dibayar \n");
         }
-
     }
 
     private boolean checkStock(ArrayList<TransaksiDetail> list){

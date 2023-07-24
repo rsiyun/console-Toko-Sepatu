@@ -5,11 +5,13 @@ import entity.User;
 import service.AllSql;
 import service.BaseAuth;
 import service.CommandLineTable;
+import service.CommandLineCleaner;
 import service.Enum;
 
 public class UserController extends AllSql{
     public void UserAdmin() throws Exception {
         Scanner scanner = new Scanner(System.in);
+        CommandLineCleaner clClear = new CommandLineCleaner();
         boolean endwhile = true;
         while(endwhile){
             System.out.println("1. Menampilkan User");
@@ -17,6 +19,7 @@ public class UserController extends AllSql{
             System.out.println("3. back");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
+            clClear.clear();
             switch (pilihan) {
             case "1":
                 this.ShowUser();
@@ -44,7 +47,7 @@ public class UserController extends AllSql{
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan id user yang ingin diubah : ");
         String idUser = scanner.nextLine();
-        if(!checkUser(listUser, Integer.parseInt(idUser))){
+        if(!checkUser(listUser, idUser)){
             System.out.println("Tolong Input id dengan benar");
             // scanner.close();
             return;
@@ -185,9 +188,14 @@ public class UserController extends AllSql{
         return role;
     }
 
-    private boolean checkUser(ArrayList<User> list, int id) throws Exception{
+    private boolean checkUser(ArrayList<User> list, String id) throws Exception{
+        try{
+            Integer.parseInt(id);
+        }catch(Exception e){
+            return false;
+        }
         for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getIdUser() == id){
+            if(list.get(i).getIdUser() == Integer.parseInt(id)){
                 return true;
             }
         }

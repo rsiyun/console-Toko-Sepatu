@@ -5,9 +5,11 @@ import java.util.Scanner;
 import entity.Brand;
 import service.AllSql;
 import service.CommandLineTable;
+import service.CommandLineCleaner;
 
 public class BrandController extends AllSql{
     public void brandAdmin() throws Exception {
+        CommandLineCleaner clClear = new CommandLineCleaner();
         Scanner scanner = new Scanner(System.in);
         boolean endwhile = true;
         while(endwhile) {
@@ -18,6 +20,7 @@ public class BrandController extends AllSql{
             System.out.println("5. back");
             System.out.print("pilih pilihan anda: ");
             String pilihan = scanner.nextLine();
+            clClear.clear();
             switch (pilihan) {
                 case "1":
                     select();

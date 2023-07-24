@@ -8,9 +8,11 @@ import entity.Produk;
 import entity.ProdukDetail;
 import service.AllSql;
 import service.CommandLineTable;
+import service.CommandLineCleaner;
 
 public class ProdukController extends AllSql{
     public void ProductAdmin() throws Exception {
+        CommandLineCleaner clClear = new CommandLineCleaner();
         Scanner scanner = new Scanner(System.in);
         boolean endwhile = true;
         while (endwhile) {
@@ -22,6 +24,7 @@ public class ProdukController extends AllSql{
             System.out.println("6. back");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
+            clClear.clear();
             switch (pilihan) {
                 case "1":
                     showProduk();
