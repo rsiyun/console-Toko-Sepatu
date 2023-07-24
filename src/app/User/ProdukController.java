@@ -21,8 +21,8 @@ public class ProdukController extends AllSql{
         String pilihan = scanner.nextLine();
         switch (pilihan) {
             case "1":
-                showProduk();
-                ProdukDetailUser();
+                if(showProduk())
+                    ProdukDetailUser();
                 break;
             case "2":
                 searchProduk();
@@ -38,9 +38,14 @@ public class ProdukController extends AllSql{
         }
         }
     }
-    public void showProduk() throws Exception{
+    public boolean showProduk() throws Exception{
         try{
+
             ArrayList<Produk> listProduk = this.selectProduk();
+            if (listProduk.size() == 0) {
+                System.out.println("Belum ada Produk");
+                return false;
+            }
             CommandLineTable table = new CommandLineTable();
             table.setShowVerticalLines(true);
             table.setHeaders("Id Produk", "Nama Produk", "Nama Brand", "Harga");
@@ -48,8 +53,10 @@ public class ProdukController extends AllSql{
                 table.addRow(String.valueOf(produk.getIdProduk()), produk.getNamaProduct(), produk.getBrand().getBrand(), String.valueOf(produk.getHarga()));
             }
             table.print();
+            return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
+            return false;
         }
     }
     public void ProdukDetailUser() throws Exception{

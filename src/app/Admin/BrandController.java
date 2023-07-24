@@ -27,13 +27,13 @@ public class BrandController extends AllSql{
                     create();
                     break;
                 case "3":
-                    select();
-                    update();
+                    if(select())
+                        update();
                     break;
     
                 case "4":
-                    select();
-                    delete();
+                    if(select())
+                        delete();
                     break;
                 case "5":
                     endwhile = false;
@@ -82,9 +82,13 @@ public class BrandController extends AllSql{
         }
         // scanner.close();
     }
-    public void select(){
+    public boolean select(){
         try {
             ArrayList<Brand> list = this.selectBrand();
+            if (list.size() == 0) {
+                System.out.println("Data Brand kosong, silahkan input data terlebih dahulu");
+                return false;
+            }
             CommandLineTable table = new CommandLineTable();
             table.setShowVerticalLines(true);
             table.setHeaders("Id Brand", "Nama Brand");
@@ -92,8 +96,10 @@ public class BrandController extends AllSql{
                 table.addRow(list.get(i).getIdBrand()+"", list.get(i).getBrand()+"");
             }
             table.print();
+            return true;
         } catch (Exception e) {
             System.out.print("Something wrong in this area");
+            return false;
         }
     }
 

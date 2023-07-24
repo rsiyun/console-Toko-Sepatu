@@ -11,10 +11,10 @@ public class Admin {
         CommandLineCleaner clClear = new CommandLineCleaner();
         Scanner scanner = new Scanner(System.in);
             System.out.println("Selamat Datang Admin: "+ baseAuth.getUser().getUsername());
-            System.out.println("1. List Brand");
-            System.out.println("2. List Product");
-            System.out.println("3. List Transaksi");
-            System.out.println("4. List User");
+            System.out.println("1. Halaman Brand");
+            System.out.println("2. Halaman Product");
+            System.out.println("3. Halaman Transaksi");
+            System.out.println("4. Halaman User");
             System.out.println("5. Logout");
             System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();

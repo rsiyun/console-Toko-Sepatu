@@ -43,6 +43,10 @@ public class TransaksiController extends AllSql{
     }
     public void TransaksiDetailAdmin() throws Exception{
         ArrayList<Transaksi> listTransaksi = this.selectTransaksi();
+        if (listTransaksi.size() == 0) {
+            System.out.println("Belum ada transaksi");
+            return;
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan id transaksi yang ingin di lihat detailnya : ");
         String idTransaksi = scanner.nextLine();
@@ -79,6 +83,10 @@ public class TransaksiController extends AllSql{
     private void showTransaksi() throws Exception {
         try {
             ArrayList<Transaksi> listTransaksi = this.selectTransaksi();
+            if (listTransaksi.size() == 0) {
+                System.out.println("Belum ada Transaksi");
+                return;
+            }
             CommandLineTable cmd = new CommandLineTable();
             cmd.setShowVerticalLines(true);
             cmd.setHeaders("ID Transaksi", "ID User", "Total Harga", "Tanggal Transaksi", "Status");

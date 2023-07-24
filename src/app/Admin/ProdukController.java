@@ -32,18 +32,18 @@ public class ProdukController extends AllSql{
                     break;
             
                 case "3":
-                    showProduk();
-                    updateProduk();
+                    if(showProduk())
+                        updateProduk();
                     break;
             
                 case "4":
-                    showProduk();
-                    deleteProduk();
+                    if(showProduk())
+                        deleteProduk();
                     break;
     
                 case "5":
-                    showProduk();
-                    produkDetailAdmin();
+                    if(showProduk())
+                        produkDetailAdmin();
                     break;
             
                 case "6":
@@ -117,10 +117,18 @@ public class ProdukController extends AllSql{
     }
 
     public void createProduk()throws Exception{
+        CommandLineTable table = new CommandLineTable();
         ArrayList<Brand> list = this.selectBrand();
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i).getIdBrand() +" "+list.get(i).getBrand());
+        if (list.size() == 0) {
+            System.out.println("Data Brand Kosong, silahkan input data Brand terlebih dahulu");
+            return;
         }
+        table.setShowVerticalLines(true);
+        table.setHeaders("Id Brand", "Nama Brand");
+        for (int i = 0; i < list.size(); i++) {
+            table.addRow(list.get(i).getIdBrand()+"", list.get(i).getBrand()+"");
+        }
+        table.print();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Pilih id brand: ");
         String idbrand = scanner.nextLine();
@@ -137,9 +145,13 @@ public class ProdukController extends AllSql{
         this.sqlexupdate(sql);
         // scanner.close(); 
     }
-    private void showProduk(){
+    private boolean showProduk(){
         try {
             ArrayList<Produk> list = this.selectProduk();
+            if (list.size() == 0) {
+                System.out.println("Data Produk Kosong, silahkan input data terlebih dahulu");
+                return false;
+            }
             CommandLineTable st = new CommandLineTable();
             st.setShowVerticalLines(true);
             st.setHeaders("ID Produk", "Nama Produk", "ID Brand", "Nama Brand", "Harga");
@@ -147,8 +159,10 @@ public class ProdukController extends AllSql{
                 st.addRow(list.get(i).getIdProduk()+"", list.get(i).getNamaProduct(), list.get(i).getidBrand()+"", list.get(i).getBrand().getBrand(), list.get(i).getHarga()+"");
             }
             st.print();
+            return true;
         } catch (Exception e) {
             System.out.print(e);
+            return false;
         }
     }
     public void produkDetailAdmin() throws Exception{
@@ -177,13 +191,13 @@ public class ProdukController extends AllSql{
                 createProdukDetail(Integer.parseInt(idproduk));
                 break;
             case "3":
-                showProdukDetail(Integer.parseInt(idproduk));
-                updateProdukDetail(Integer.parseInt(idproduk));
+                if(showProdukDetail(Integer.parseInt(idproduk)))
+                    updateProdukDetail(Integer.parseInt(idproduk));
                 break;
 
             case "4":
-                showProdukDetail(Integer.parseInt(idproduk));
-                deleteProdukDetail(Integer.parseInt(idproduk));
+                if(showProdukDetail(Integer.parseInt(idproduk)))
+                    deleteProdukDetail(Integer.parseInt(idproduk));
                 break;
             case "5":
                 ProductAdmin();
@@ -240,8 +254,12 @@ public class ProdukController extends AllSql{
         this.sqlexupdate(sql);
         // scanner.close();
     }
-    public void showProdukDetail(int id) throws Exception{
+    public boolean showProdukDetail(int id) throws Exception{
         ArrayList<ProdukDetail> list = this.selectProdukDetailbyIdproduk(id);
+        if (list.size() == 0) {
+            System.out.println("Data Produk Detail Kosong, silahkan input data terlebih dahulu");
+            return false;
+        }
         CommandLineTable cmd = new CommandLineTable();
         cmd.setShowVerticalLines(true);
         cmd.setHeaders("ID Produk Detail", "ID Produk", "Nama Produk", "Nama Brand", "Harga", "Ukuran", "Warna", "Stok");
@@ -249,6 +267,7 @@ public class ProdukController extends AllSql{
             cmd.addRow(list.get(i).getIdProdukDetail()+"", list.get(i).getidProduk()+"", list.get(i).getProduk().getNamaProduct(), list.get(i).getProduk().getBrand().getBrand(), list.get(i).getProduk().getHarga()+"", list.get(i).getUkuran()+"", list.get(i).getWarna(), list.get(i).getStock()+"");
         }
         cmd.print();
+        return true;
     }
     private boolean checkBrand(ArrayList<Brand> list, String idbrand){
         boolean t = false;

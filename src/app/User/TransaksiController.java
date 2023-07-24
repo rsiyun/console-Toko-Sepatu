@@ -27,8 +27,8 @@ public class TransaksiController extends AllSql{
             clClear.clear();
             switch (pilihan) {
                 case "1":
-                    showTransaction(list);
-                    changeStatus(baseAuth.getUser().getIdUser());
+                    if(showTransaction(list))
+                        changeStatus(baseAuth.getUser().getIdUser());
                     break;
                 case "2":
                     showTransaction(list);
@@ -45,10 +45,10 @@ public class TransaksiController extends AllSql{
         }
     }
 
-    private void showTransaction(ArrayList<Transaksi> list)throws Exception{
+    private boolean showTransaction(ArrayList<Transaksi> list)throws Exception{
         if(list.isEmpty()){
             System.out.println("\n\n Belum ada Transaksi \n\n");
-            return;
+            return false;
         }
         CommandLineTable table = new CommandLineTable();
         table.setShowVerticalLines(true);
@@ -57,6 +57,7 @@ public class TransaksiController extends AllSql{
             table.addRow(String.valueOf(transaksi.getIdTransaksi()), transaksi.getTglTransaksi()+"", String.valueOf(transaksi.getTotalHarga()), showTransaksiLabel(transaksi.getStatus()));
         }
         table.print();
+        return true;
     }
     private void changeStatus(int idUser)throws Exception{
         Scanner scanner = new Scanner(System.in);
