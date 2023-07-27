@@ -78,8 +78,27 @@ public class TransaksiController extends AllSql{
             String sql = "UPDATE transaksi SET status = 2 WHERE id_transaksi = "+idTransaksi+";";
             this.sqlexupdate(sql);
             System.out.println("Transaksi telah dikonfirmasi");
+            return;
+        }
+        System.out.println("Apakah anda ingin membatalkan transaksi ini ? (y/n)" );
+        pil = scanner.nextLine();
+        if (pil.equals("y")||pil.equals("Y")) {
+            String sql = "UPDATE transaksi SET status = 3 WHERE id_transaksi = "+idTransaksi+";";
+            this.sqlexupdate(sql);
+            ArrayList<TransaksiDetail> list = this.selectTransaksiDetailbyIdtransaksi(oldData.getIdTransaksi());
+            this.rollbackStock(list);
+            System.out.println("Transaksi telah dibatalkan");
         }
         // scanner.close();
+    }
+    private void rollbackStock(ArrayList<TransaksiDetail> list){
+        for (int i = 0; i < list.size(); i++) {
+            // Mapping data
+            int newStock = list.get(i).getProdukDetail().getStock() + list.get(i).getQuantity();
+            
+            String sql = "UPDATE produk_detail SET produk_detail.stock = "+newStock+" WHERE produk_detail.id_produk_detail = "+list.get(i).getIdProdukDetail()+";";
+            sqlexupdate(sql);
+        }
     }
     private void showTransaksi() throws Exception {
         try {
@@ -178,6 +197,8 @@ public class TransaksiController extends AllSql{
             return "Dipesan";
         }else if (Transaksi.getStatus() == Enum.StatusTransaksi.dibayar.value){
             return "Dibayar";
+        }else if (Transaksi.getStatus() == Enum.StatusTransaksi.dibatalkan.value) {
+            return "Dibatalkan";
         }
         return "Dikonfirmasi";
     }

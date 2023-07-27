@@ -124,6 +124,8 @@ public class TransaksiController extends AllSql{
             return "Di Konfirmasi";
         }else if(vl == StatusTransaksi.dibayar.value){
             return "Di Bayar";
+        }else if (vl == StatusTransaksi.dibatalkan.value) {
+            return "Dibatalkan";
         }
         return "Di Pesan";
     }

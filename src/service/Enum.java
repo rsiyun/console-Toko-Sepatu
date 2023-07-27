@@ -22,7 +22,7 @@ public class Enum {
         }
     }
     public enum StatusTransaksi {
-        dipesan(0),dibayar(1), dikonfirmasi(2);
+        dipesan(0),dibayar(1), dikonfirmasi(2), dibatalkan(3);
 
         public final int value;
 

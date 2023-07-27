@@ -153,12 +153,12 @@ public class UserController extends AllSql{
             System.out.println("User adalah USER, ingin dirubah menjadi?");
             System.out.println("1. SUPER ADMIN");
             System.out.println("2. ADMIN");
-            System.out.println("Pilih Pilihan anda: ");
+            System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
             // scanner.close();
-            if (pilihan == "1")
+            if (pilihan.equals("1"))
                 return Enum.RoleUsers.superAdmin.value;
-            else if (pilihan == "2")
+            else if (pilihan.equals("2"))
                 return Enum.RoleUsers.Admin.value;  
             else
                 return role;      
@@ -166,12 +166,12 @@ public class UserController extends AllSql{
             System.out.println("User adalah ADMIN, ingin dirubah menjadi?");
             System.out.println("1. SUPER ADMIN");
             System.out.println("2. USER");
-            System.out.println("Pilih Pilihan anda: ");
+            System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
             // scanner.close();
-            if (pilihan == "1")
+            if (pilihan.equals("1"))
                 return Enum.RoleUsers.superAdmin.value;
-            else if (pilihan == "2")
+            else if (pilihan.equals("2"))
                 return Enum.RoleUsers.Users.value;
             else
                 return role;
@@ -179,12 +179,12 @@ public class UserController extends AllSql{
             System.out.println("User adalah SUPER ADMIN, ingin dirubah menjadi?");
             System.out.println("1. ADMIN");
             System.out.println("2. USER");
-            System.out.println("Pilih Pilihan anda: ");
+            System.out.print("Pilih Pilihan anda: ");
             String pilihan = scanner.nextLine();
             // scanner.close();
-            if (pilihan == "1")
+            if (pilihan.equals("1"))
                 return Enum.RoleUsers.Admin.value;
-            else if (pilihan == "2")
+            else if (pilihan.equals("2"))
                 return Enum.RoleUsers.Users.value;
             else
                 return role; 

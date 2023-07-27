@@ -18,6 +18,10 @@ public class Auth extends AllSql{
         if (getDataUser(password, username) == null) {
             System.out.println("Username dan Password Salah");
         }
+        if (getDataUser(password, username).getActive() == 0) {
+            System.out.println("Anda Telah di Ban, dimohon hubungi admin");
+            return null;
+        }
         return getDataUser(password, username);
     }
 
