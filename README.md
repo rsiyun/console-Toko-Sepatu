@@ -4,9 +4,9 @@ Welcome to the VS Code Java world. Here is a guideline to help you get started t
 
 
 ## Usage
-  ## 1 clone this folder
-  ## 2 download jar dependency from https://dev.mysql.com/downloads/connector/j/
-  ## 3 run this project
+- `1`: clone this folder
+- `2` : download jar dependency from https://dev.mysql.com/downloads/connector/j/
+- `3` : run this project
 
 ## Folder Structure
 
