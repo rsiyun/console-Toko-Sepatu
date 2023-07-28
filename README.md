@@ -2,12 +2,20 @@
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
 
+
+## Usage
+  ## 1 clone this folder
+  ## 2 download jar dependency from https://dev.mysql.com/downloads/connector/j/
+  ## 3 run this project
+
 ## Folder Structure
 
-The workspace contains two folders by default, where:
+The workspace contains 3 folders and 1 file by default, where:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- `App`: contain admin flow, user flow and Auth
+- `Entity` : contain object for connect to database
+- `Service` : contain reuse function
+- `App.java` : Main File from this Project
 
 Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
