@@ -7,6 +7,7 @@ import service.AllSql;
 import service.CommandLineTable;
 import service.CommandLineCleaner;
 import service.Enum;
+import service.BaseAuth;
 
 public class TransaksiController extends AllSql{
     public void TransaksiAdmin() throws Exception {
@@ -62,6 +63,7 @@ public class TransaksiController extends AllSql{
     }
     private void updateTransaksi() throws Exception{
         ArrayList<Transaksi> listTransaksi = this.selectTransaksi();
+        BaseAuth baseAuth = BaseAuth.getInstance();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan id transaksi yang ingin di konfirmasi : ");
         String idTransaksi = scanner.nextLine();
@@ -75,7 +77,7 @@ public class TransaksiController extends AllSql{
         System.out.println("Apakah anda ingin mengkonfirmasi transaksi ini? (y/n)");
         String pil = scanner.nextLine();
         if(pil.equals("y")||pil.equals("Y")){
-            String sql = "UPDATE transaksi SET status = 2 WHERE id_transaksi = "+idTransaksi+";";
+            String sql = "UPDATE transaksi SET status = 2, username_admin = '"+baseAuth.getUser().getUsername()+"' WHERE id_transaksi = "+idTransaksi+";";
             this.sqlexupdate(sql);
             System.out.println("Transaksi telah dikonfirmasi");
             return;
@@ -83,7 +85,7 @@ public class TransaksiController extends AllSql{
         System.out.println("Apakah anda ingin membatalkan transaksi ini ? (y/n)" );
         pil = scanner.nextLine();
         if (pil.equals("y")||pil.equals("Y")) {
-            String sql = "UPDATE transaksi SET status = 3 WHERE id_transaksi = "+idTransaksi+";";
+            String sql = "UPDATE transaksi SET status = 3, username_admin = '"+baseAuth.getUser().getUsername()+"' WHERE id_transaksi = "+idTransaksi+";";
             this.sqlexupdate(sql);
             ArrayList<TransaksiDetail> list = this.selectTransaksiDetailbyIdtransaksi(oldData.getIdTransaksi());
             this.rollbackStock(list);
@@ -109,10 +111,16 @@ public class TransaksiController extends AllSql{
             }
             CommandLineTable cmd = new CommandLineTable();
             cmd.setShowVerticalLines(true);
-            cmd.setHeaders("ID Transaksi", "ID User", "Total Harga", "Tanggal Transaksi", "Status");
+            cmd.setHeaders("ID Transaksi", "ID User", "nama Admin", "Total Harga", "Tanggal Transaksi", "Status");
             for (Transaksi transaksi : listTransaksi) {
-                cmd.addRow(String.valueOf(transaksi.getIdTransaksi()), String.valueOf(transaksi.getIdUser()), String.valueOf(transaksi.getTotalHarga()), String.valueOf(transaksi.getTglTransaksi()), getStatus(transaksi));
-            }
+                String Name;
+                if(transaksi.getUsernameAdmin() == null || transaksi.getUsernameAdmin().equals("")) {
+                  Name = "Belum di Konfirmasi";
+                }else{
+                 Name = transaksi.getUsernameAdmin();
+                }
+                    cmd.addRow(String.valueOf(transaksi.getIdTransaksi()), String.valueOf(transaksi.getIdUser()), Name, String.valueOf(transaksi.getTotalHarga()), String.valueOf(transaksi.getTglTransaksi()), getStatus(transaksi));
+                }
             cmd.print();
         }
         catch (Exception e) {

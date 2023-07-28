@@ -104,24 +104,24 @@ public class AllSql extends ExecuteSql{
         return list;
     }
     public ArrayList<Transaksi> selectTransaksi() throws Exception{
-        String sql = "SELECT id_transaksi, transaksi.id_user, total_harga, tgl_transaksi, status, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user;";
+        String sql = "SELECT id_transaksi, transaksi.id_user, transaksi.username_admin, total_harga, tgl_transaksi, status, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user;";
         ResultSet rs = this.sqlquerry(sql);
         ArrayList<Transaksi> list = new ArrayList<Transaksi>();
         while (rs.next()) {
             User user = new User(rs.getInt("id_user"), rs.getString("username"), 0, rs.getInt("active"));
-            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getString("username_admin"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
             list.add(transaksi);
         }
         return list;
     }
 
     public ArrayList<Transaksi> selectTransaksiByIdUser(int idUser) throws Exception{
-        String sql = "SELECT id_transaksi, transaksi.id_user, total_harga, tgl_transaksi, status, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user WHERE users.id_user = "+idUser+";";
+        String sql = "SELECT id_transaksi, transaksi.id_user, transaksi.username_admin, total_harga, tgl_transaksi, status, users.username, users.active FROM transaksi INNER JOIN users ON transaksi.id_user = users.id_user WHERE users.id_user = "+idUser+";";
         ResultSet rs = this.sqlquerry(sql);
         ArrayList<Transaksi> list = new ArrayList<Transaksi>();
         while (rs.next()) {
             User user = new User(rs.getInt("id_user"), rs.getString("username"), 0, rs.getInt("active"));
-            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
+            Transaksi transaksi = new Transaksi(rs.getInt("id_transaksi"), rs.getInt("id_user"), rs.getString("username_admin"), rs.getFloat("total_harga"), rs.getDate("tgl_transaksi"), rs.getInt("status"), user);
             list.add(transaksi);
         }
         return list;

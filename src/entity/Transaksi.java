@@ -5,6 +5,7 @@ import java.sql.Date;
 public class Transaksi {
     private int idTransaksi;
     private int idUser; // foreign key User
+    private String usernameAdmin;
     private float totalHarga;
     private Date tglTransaksi;
     private int status;
@@ -19,6 +20,16 @@ public class Transaksi {
         this.user = user;
     }
 
+    public Transaksi(int idTransaksi, int idUser, String usernameAdmin, float totalHarga, Date tglTransaksi, int status, User user) {
+        this.idTransaksi = idTransaksi;
+        this.idUser = user.getIdUser();
+        this.usernameAdmin = usernameAdmin;
+        this.totalHarga = totalHarga;
+        this.tglTransaksi = tglTransaksi;
+        this.status = status;
+        this.user = user;
+    }
+
     public int getIdTransaksi() {
         return idTransaksi;
     }
@@ -27,6 +38,9 @@ public class Transaksi {
     }
     public int getIdUser() {
         return idUser;
+    }
+    public String getUsernameAdmin(){
+        return usernameAdmin;
     }
     public float getTotalHarga() {
         return totalHarga;

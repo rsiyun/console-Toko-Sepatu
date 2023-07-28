@@ -48,9 +48,16 @@ public class TransaksiController extends AllSql{
         }
         CommandLineTable table = new CommandLineTable();
         table.setShowVerticalLines(true);
-        table.setHeaders("Id Transaksi", "Tanggal Transaksi", "Total Harga", "Status");
+        table.setHeaders("Id Transaksi", "Nama Admin", "Tanggal Transaksi", "Total Harga", "Status");
         for (Transaksi transaksi : list) {
-            table.addRow(String.valueOf(transaksi.getIdTransaksi()), transaksi.getTglTransaksi()+"", String.valueOf(transaksi.getTotalHarga()), showTransaksiLabel(transaksi.getStatus()));
+            String Name;
+            System.out.println(transaksi.getUsernameAdmin());
+            if(transaksi.getUsernameAdmin() == null || transaksi.getUsernameAdmin().equals("")) {
+              Name = "Belum di Konfirmasi";
+            }else{
+             Name = transaksi.getUsernameAdmin();
+            }
+            table.addRow(String.valueOf(transaksi.getIdTransaksi()), Name, transaksi.getTglTransaksi()+"", String.valueOf(transaksi.getTotalHarga()), showTransaksiLabel(transaksi.getStatus()));
         }
         table.print();
         return true;
